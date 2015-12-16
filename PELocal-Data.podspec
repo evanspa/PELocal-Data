@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "PELocal-Data"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.license      = "MIT"
   s.summary      = "An iOS static library facilitating the maintenance of a sync-able, SQLite database instance."
   s.author       = { "Paul Evans" => "evansp2@gmail.com" }
@@ -11,9 +11,8 @@ Pod::Spec.new do |s|
   s.public_header_files = '**/*.h'
   s.exclude_files = "**/*Tests/*.*"
   s.requires_arc = true
-  s.dependency 'PEObjc-Commons', '~> 1.0.100'
+  s.dependency 'PEObjc-Commons', '~> 1.0.101'
   s.dependency 'FMDB', '~> 2.5'
   s.dependency 'PEHateoas-Client', '~> 1.0.8'
   s.dependency 'CocoaLumberjack', '~> 1.9'
-  s.library = 'sqlite3'
 end
