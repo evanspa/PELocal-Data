@@ -1,0 +1,93 @@
+PODS:
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - BlocksKit (2.2.5):
+    - BlocksKit/All (= 2.2.5)
+  - BlocksKit/All (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+    - BlocksKit/MessageUI
+    - BlocksKit/UIKit
+  - BlocksKit/Core (2.2.5)
+  - BlocksKit/DynamicDelegate (2.2.5)
+  - BlocksKit/MessageUI (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - BlocksKit/UIKit (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - CocoaLumberjack (1.9.2):
+    - CocoaLumberjack/Extensions (= 1.9.2)
+  - CocoaLumberjack/Core (1.9.2)
+  - CocoaLumberjack/Extensions (1.9.2):
+    - CocoaLumberjack/Core
+  - FMDB (2.5):
+    - FMDB/standard (= 2.5)
+  - FMDB/common (2.5)
+  - FMDB/standard (2.5):
+    - FMDB/common
+  - KissXML (5.0)
+  - Kiwi (2.3.1)
+  - OHHTTPStubs (3.1.12):
+    - OHHTTPStubs/Core (= 3.1.12)
+  - OHHTTPStubs/Core (3.1.12)
+  - PEHateoas-Client (1.0.8):
+    - AFNetworking (~> 2.5.4)
+    - CocoaLumberjack (~> 1.9)
+    - PEObjc-Commons (~> 1.0.73)
+  - PEObjc-Commons (1.0.101):
+    - BlocksKit (~> 2.2.5)
+  - PEWire-Control (1.0.5):
+    - KissXML (~> 5.0)
+    - OHHTTPStubs (~> 3.1.10)
+    - PEObjc-Commons (~> 1.0.86)
+    - PEXML-Utils (~> 1.0.4)
+  - PEXML-Utils (1.0.4):
+    - KissXML (~> 5.0)
+    - PEObjc-Commons (~> 1.0.86)
+
+DEPENDENCIES:
+  - AFNetworking (~> 2.5.4)
+  - BlocksKit (~> 2.2.5)
+  - CocoaLumberjack (~> 1.9)
+  - FMDB (~> 2.5)
+  - KissXML (~> 5.0)
+  - Kiwi (~> 2.3.1)
+  - OHHTTPStubs (~> 3.1.12)
+  - PEHateoas-Client (~> 1.0.8)
+  - PEObjc-Commons (~> 1.0.100)
+  - PEWire-Control (~> 1.0.4)
+
+SPEC CHECKSUMS:
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
+  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
+  KissXML: ce643413d618ad69886d0d43c3792b7dedfe476e
+  Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
+  OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
+  PEHateoas-Client: 4eb23cd4a1c106ecab147abd87cd3cacac93d52f
+  PEObjc-Commons: 1dc819c655df6f37ff3ecbc22db00a95dbd15dbd
+  PEWire-Control: c2d18d4261d025182513466da9c6ed80e596f526
+  PEXML-Utils: d36d0ab7337b92c120ec49b84f99e7b923bf8a24
+
+COCOAPODS: 0.39.0
