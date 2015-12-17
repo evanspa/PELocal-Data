@@ -50,7 +50,7 @@ PODS:
   - OHHTTPStubs (3.1.12):
     - OHHTTPStubs/Core (= 3.1.12)
   - OHHTTPStubs/Core (3.1.12)
-  - PEHateoas-Client (1.0.8):
+  - PEHateoas-Client (1.0.9):
     - AFNetworking (~> 2.5.4)
     - CocoaLumberjack (~> 1.9)
     - PEObjc-Commons (~> 1.0.73)
@@ -73,8 +73,8 @@ DEPENDENCIES:
   - KissXML (~> 5.0)
   - Kiwi (~> 2.3.1)
   - OHHTTPStubs (~> 3.1.12)
-  - PEHateoas-Client (~> 1.0.8)
-  - PEObjc-Commons (~> 1.0.100)
+  - PEHateoas-Client (~> 1.0.9)
+  - PEObjc-Commons (~> 1.0.101)
   - PEWire-Control (~> 1.0.4)
 
 SPEC CHECKSUMS:
@@ -85,7 +85,7 @@ SPEC CHECKSUMS:
   KissXML: ce643413d618ad69886d0d43c3792b7dedfe476e
   Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
   OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
-  PEHateoas-Client: 4eb23cd4a1c106ecab147abd87cd3cacac93d52f
+  PEHateoas-Client: a3b722c8092e7b9ddd1684be74f6b86d4f63ee31
   PEObjc-Commons: 1dc819c655df6f37ff3ecbc22db00a95dbd15dbd
   PEWire-Control: c2d18d4261d025182513466da9c6ed80e596f526
   PEXML-Utils: d36d0ab7337b92c120ec49b84f99e7b923bf8a24

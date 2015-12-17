@@ -2,9 +2,9 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.4'
 
-pod 'PEObjc-Commons', '~> 1.0.100', :inhibit_warnings => true
+pod 'PEObjc-Commons', '~> 1.0.101', :inhibit_warnings => true
 pod 'FMDB', '~> 2.5', :inhibit_warnings => true
-pod 'PEHateoas-Client', '~> 1.0.8', :inhibit_warnings => true
+pod 'PEHateoas-Client', '~> 1.0.9', :inhibit_warnings => true
 pod 'CocoaLumberjack', '~> 1.9', :inhibit_warnings => true
 
 pod 'AFNetworking', '~> 2.5.4', :inhibit_warnings => true
