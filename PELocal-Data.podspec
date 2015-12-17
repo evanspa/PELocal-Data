@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.dependency 'PEObjc-Commons', '~> 1.0.101'
   s.dependency 'FMDB', '~> 2.5'
-  s.dependency 'PEHateoas-Client', '~> 1.0.9'
+  s.dependency 'PEHateoas-Client', '~> 1.0.10'
   s.dependency 'CocoaLumberjack', '~> 1.9'
 end
