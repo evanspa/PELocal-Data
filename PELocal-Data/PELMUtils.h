@@ -22,11 +22,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import <FMDB/FMDatabaseQueue.h>
-#import <FMDB/FMResultSet.h>
-#import <PEHateoas-Client/HCAuthentication.h>
-#import "PELMMainSupport.h"
+
+@import Foundation;
+
+@class FMDatabase;
+@class FMDatabaseQueue;
+@class FMResultSet;
+@class HCAuthentication;
+
+@class PELMModelSupport;
+@class PELMMainSupport;
+@class PELMMasterSupport;
 
 /**
  Param 1 (NSString *): New authentication token.

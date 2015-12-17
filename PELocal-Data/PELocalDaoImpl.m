@@ -26,6 +26,7 @@
 #import <FMDB/FMDatabase.h>
 #import "PELMDDL.h"
 #import <PEObjc-Commons/PEUtils.h>
+#import <PEHateoas-Client/HCMediaType.h>
 
 @implementation PELocalDaoImpl {
   Class _concreteUserClass;

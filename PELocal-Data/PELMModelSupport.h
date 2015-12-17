@@ -22,8 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
-#import <PEHateoas-Client/HCMediaType.h>
+@import Foundation;
+@class HCMediaType;
 
 @interface PELMModelSupport : NSObject
 

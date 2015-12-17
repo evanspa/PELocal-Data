@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <PEHateoas-Client/HCHalJsonSerializerExtensionSupport.h>
+#import "HCHalJsonSerializerExtensionSupport.h"
 
 @interface PEUserSerializer : HCHalJsonSerializerExtensionSupport
 

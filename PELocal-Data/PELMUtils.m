@@ -25,6 +25,7 @@
 #import "PELMUtils.h"
 #import "PELMDDL.h"
 #import <FMDB/FMDatabase.h>
+#import <FMDB/FMDatabaseQueue.h>
 #import <PEObjc-Commons/PEUtils.h>
 #import <PEHateoas-Client/HCRelation.h>
 #import "PELMNotificationUtils.h"

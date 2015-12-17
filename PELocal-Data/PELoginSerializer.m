@@ -25,6 +25,7 @@
 #import "PELoginSerializer.h"
 #import "PELMLoginUser.h"
 #import <PEObjc-Commons/NSMutableDictionary+PEAdditions.h>
+#import "PEUserSerializer.h"
 
 NSString * const PELoginUserEmailKey    = @"user/username-or-email";
 NSString * const PELoginUserPasswordKey = @"user/password";
