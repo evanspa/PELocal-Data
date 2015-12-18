@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 #import "PELMNotificationUtils.h"
+#import "PELMMainSupport.h"
 
 NSString * const PELMNotificationEntitiesUserInfoKey = @"PELMNotificationEntitiesUserInfoKey";
 
