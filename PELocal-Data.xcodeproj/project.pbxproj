@@ -43,6 +43,7 @@
 /* Begin PBXFileReference section */
 		4E4704840C21A8F9B5BAAC27 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		5F38257882D40B1B9F27B95A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA37CF541C24510E002F09A6 /* PELMDefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PELMDefs.h; sourceTree = SOURCE_ROOT; };
 		CA46909C1C1BBC3800E4718E /* libPELocal-Data.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPELocal-Data.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA5CCA5F1C21182000C64B3F /* PELMUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PELMUtils.h; path = "PELocal-Data/PELMUtils.h"; sourceTree = SOURCE_ROOT; };
 		CA5CCA601C21182000C64B3F /* PELMUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PELMUtils.m; path = "PELocal-Data/PELMUtils.m"; sourceTree = SOURCE_ROOT; };
@@ -114,6 +115,14 @@
 				5F38257882D40B1B9F27B95A /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA37CF531C245101002F09A6 /* Typedefs */ = {
+			isa = PBXGroup;
+			children = (
+				CA37CF541C24510E002F09A6 /* PELMDefs.h */,
+			);
+			name = Typedefs;
 			sourceTree = "<group>";
 		};
 		CA3ECDDC1C21041D00E9FDA3 /* Utils */ = {
@@ -318,6 +327,7 @@
 		CA46909E1C1BBC3800E4718E /* PELocal-Data */ = {
 			isa = PBXGroup;
 			children = (
+				CA37CF531C245101002F09A6 /* Typedefs */,
 				CA3ECDE11C21047600E9FDA3 /* DAO */,
 				CA3ECDE01C21044500E9FDA3 /* Notification Utils */,
 				CA3ECDDE1C21042D00E9FDA3 /* DDL */,

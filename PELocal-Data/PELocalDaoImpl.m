@@ -27,6 +27,11 @@
 #import "PELMDDL.h"
 #import <PEObjc-Commons/PEUtils.h>
 #import <PEHateoas-Client/HCMediaType.h>
+#import <FMDB/FMDatabaseQueue.h>
+#import <FMDB/FMDatabase.h>
+#import "PELMMainSupport.h"
+#import "PELMUser.h"
+#import "PEChangelog.h"
 
 @implementation PELocalDaoImpl {
   Class _concreteUserClass;
@@ -594,9 +599,9 @@ where %@ = ?", TBL_MAIN_USER,
             argsArray:@[[masterUser localMasterIdentifier],
                         [masterUser globalIdentifier],
                         [PEUtils millisecondsFromDate:[masterUser updatedAt]],
-                        orNil([masterUser name]),
-                        orNil([masterUser email]),
-                        orNil([PEUtils millisecondsFromDate:[masterUser verifiedAt]]),
+                        PELMOrNil([masterUser name]),
+                        PELMOrNil([masterUser email]),
+                        PELMOrNil([PEUtils millisecondsFromDate:[masterUser verifiedAt]]),
                         [mainUser localMainIdentifier]]
                    db:db
                 error:errorBlk];
@@ -640,15 +645,15 @@ where %@ = ?", TBL_MAIN_USER,
 }
 
 - (NSArray *)updateArgsForMasterUser:(PELMUser *)user {
-  return @[orNil([user globalIdentifier]),
-           orNil([[user mediaType] description]),
-           orNil([PEUtils millisecondsFromDate:[user createdAt]]),
-           orNil([PEUtils millisecondsFromDate:[user updatedAt]]),
-           orNil([PEUtils millisecondsFromDate:[user deletedAt]]),
-           orNil([user name]),
-           orNil([user email]),
-           orNil([user password]),
-           orNil([PEUtils millisecondsFromDate:[user verifiedAt]]),
+  return @[PELMOrNil([user globalIdentifier]),
+           PELMOrNil([[user mediaType] description]),
+           PELMOrNil([PEUtils millisecondsFromDate:[user createdAt]]),
+           PELMOrNil([PEUtils millisecondsFromDate:[user updatedAt]]),
+           PELMOrNil([PEUtils millisecondsFromDate:[user deletedAt]]),
+           PELMOrNil([user name]),
+           PELMOrNil([user email]),
+           PELMOrNil([user password]),
+           PELMOrNil([PEUtils millisecondsFromDate:[user verifiedAt]]),
            [user localMasterIdentifier]];
 }
 
@@ -690,21 +695,21 @@ where %@ = ?", TBL_MAIN_USER,
 }
 
 - (NSArray *)updateArgsForMainUser:(PELMUser *)user {
-  return @[orNil([user globalIdentifier]),
-           orNil([[user mediaType] description]),
-           orNil([PEUtils millisecondsFromDate:[user updatedAt]]),
-           orNil([PEUtils millisecondsFromDate:[user dateCopiedFromMaster]]),
-           orNil([user name]),
-           orNil([user email]),
-           orNil([user password]),
-           orNil([PEUtils millisecondsFromDate:[user verifiedAt]]),
+  return @[PELMOrNil([user globalIdentifier]),
+           PELMOrNil([[user mediaType] description]),
+           PELMOrNil([PEUtils millisecondsFromDate:[user updatedAt]]),
+           PELMOrNil([PEUtils millisecondsFromDate:[user dateCopiedFromMaster]]),
+           PELMOrNil([user name]),
+           PELMOrNil([user email]),
+           PELMOrNil([user password]),
+           PELMOrNil([PEUtils millisecondsFromDate:[user verifiedAt]]),
            [NSNumber numberWithBool:[user editInProgress]],
            [NSNumber numberWithBool:[user syncInProgress]],
            [NSNumber numberWithBool:[user synced]],
            [NSNumber numberWithInteger:[user editCount]],
-           orNil([user syncHttpRespCode]),
-           orNil([user syncErrMask]),
-           orNil([PEUtils millisecondsFromDate:[user syncRetryAt]]),
+           PELMOrNil([user syncHttpRespCode]),
+           PELMOrNil([user syncErrMask]),
+           PELMOrNil([PEUtils millisecondsFromDate:[user syncRetryAt]]),
            [user localMainIdentifier]];
 }
 
@@ -733,23 +738,23 @@ where %@ = ?", TBL_MAIN_USER,
                     COL_MAN_SYNC_ERR_MASK,
                     COL_MAN_SYNC_RETRY_AT];
   [PELMUtils doMainInsert:stmt
-                argsArray:@[orNil([user localMasterIdentifier]),
-                            orNil([user localMasterIdentifier]),
-                            orNil([user globalIdentifier]),
-                            orNil([[user mediaType] description]),
-                            orNil([PEUtils millisecondsFromDate:[user updatedAt]]),
-                            orNil([PEUtils millisecondsFromDate:[user dateCopiedFromMaster]]),
-                            orNil([user name]),
-                            orNil([user email]),
-                            orNil([user password]),
-                            orNil([PEUtils millisecondsFromDate:[user verifiedAt]]),
+                argsArray:@[PELMOrNil([user localMasterIdentifier]),
+                            PELMOrNil([user localMasterIdentifier]),
+                            PELMOrNil([user globalIdentifier]),
+                            PELMOrNil([[user mediaType] description]),
+                            PELMOrNil([PEUtils millisecondsFromDate:[user updatedAt]]),
+                            PELMOrNil([PEUtils millisecondsFromDate:[user dateCopiedFromMaster]]),
+                            PELMOrNil([user name]),
+                            PELMOrNil([user email]),
+                            PELMOrNil([user password]),
+                            PELMOrNil([PEUtils millisecondsFromDate:[user verifiedAt]]),
                             [NSNumber numberWithBool:[user editInProgress]],
                             [NSNumber numberWithBool:[user syncInProgress]],
                             [NSNumber numberWithBool:[user synced]],
                             [NSNumber numberWithInteger:[user editCount]],
-                            orNil([user syncHttpRespCode]),
-                            orNil([user syncErrMask]),
-                            orNil([PEUtils millisecondsFromDate:[user syncRetryAt]])]
+                            PELMOrNil([user syncHttpRespCode]),
+                            PELMOrNil([user syncErrMask]),
+                            PELMOrNil([PEUtils millisecondsFromDate:[user syncRetryAt]])]
                    entity:user
                        db:db
                     error:errorBlk];
@@ -771,15 +776,15 @@ where %@ = ?", TBL_MAIN_USER,
                     COL_USR_PASSWORD_HASH,
                     COL_USR_VERIFIED_AT];
   [PELMUtils doMasterInsert:stmt
-                  argsArray:@[orNil([user globalIdentifier]),
-                              orNil([[user mediaType] description]),
-                              orNil([PEUtils millisecondsFromDate:[user createdAt]]),
-                              orNil([PEUtils millisecondsFromDate:[user updatedAt]]),
-                              orNil([PEUtils millisecondsFromDate:[user deletedAt]]),
-                              orNil([user name]),
-                              orNil([user email]),
-                              orNil([user password]),
-                              orNil([PEUtils millisecondsFromDate:[user verifiedAt]])]
+                  argsArray:@[PELMOrNil([user globalIdentifier]),
+                              PELMOrNil([[user mediaType] description]),
+                              PELMOrNil([PEUtils millisecondsFromDate:[user createdAt]]),
+                              PELMOrNil([PEUtils millisecondsFromDate:[user updatedAt]]),
+                              PELMOrNil([PEUtils millisecondsFromDate:[user deletedAt]]),
+                              PELMOrNil([user name]),
+                              PELMOrNil([user email]),
+                              PELMOrNil([user password]),
+                              PELMOrNil([PEUtils millisecondsFromDate:[user verifiedAt]])]
                      entity:user
                          db:db
                       error:errorBlk];

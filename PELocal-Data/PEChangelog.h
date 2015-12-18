@@ -23,7 +23,8 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "PELMUser.h"
+@class PELMUser;
+@class HCMediaType;
 
 @interface PEChangelog : NSObject
 

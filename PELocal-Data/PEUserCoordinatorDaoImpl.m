@@ -25,6 +25,11 @@
 #import "PEUserCoordinatorDaoImpl.h"
 #import <PEObjc-Commons/PEUtils.h>
 #import <PEHateoas-Client/HCRelation.h>
+#import <PEHateoas-Client/HCResource.h>
+#import "PELMUser.h"
+#import "PELocalDao.h"
+#import "PERemoteMasterDao.h"
+#import "PEAuthTokenDelegate.h"
 
 @implementation PEUserCoordinatorDaoImpl {
   NSInteger _timeout;

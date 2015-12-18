@@ -24,6 +24,7 @@
 
 
 @import Foundation;
+#import "PELMDefs.h"
 
 @class FMDatabase;
 @class FMDatabaseQueue;
@@ -33,67 +34,6 @@
 @class PELMModelSupport;
 @class PELMMainSupport;
 @class PELMMasterSupport;
-
-/**
- Param 1 (NSString *): New authentication token.
- Param 2 (NSString *): The global identifier of the newly created resource, in
- the event the request was a POST to create a resource.  If the request was not
- a POST to create a resource, this parameter may be nil.
- Param 3 (id): Resource returned in the response (in the case of a GET or a
- PUT).  This parameter may be nil.
- Param 4 (NSDictionary *): The relations associated with the subject-resource
- Param 5 (NSDate *): The last-modified date of the subject-resource of the HTTP request (this response-header should be present on ALL 2XX responses)
- Param 6 (BOOL): Whether or not the subject-resource is gone (existed at one point, but has since been deleted).
- Param 7 (BOOL): Whether or not the subject-resource is not-found (i.e., never exists).
- Param 8 (BOOL): Whether or not the subject-resource has permanently moved
- Param 9 (BOOL): Whether or not the subject-resource has not been modified based on conditional-fetch criteria
- Param 10 (NSError *): Encapsulates error information in the event of an error.
- Param 11 (NSHTTPURLResponse *): The raw HTTP response.
- */
-typedef void (^PELMRemoteMasterCompletionHandler)(NSString *, // auth token
-                                                  NSString *, // global URI (location) (in case of moved-permenantly, will be new location of resource)
-                                                  id,         // resource returned in response (in case of 409, will be master's copy of subject-resource)
-                                                  NSDictionary *, // resource relations
-                                                  NSDate *,   // last modified date
-                                                  BOOL,       // is conflict (if YES, then id param will be latest version of result)
-                                                  BOOL,       // gone
-                                                  BOOL,       // not found
-                                                  BOOL,       // moved permanently
-                                                  BOOL,       // not modified
-                                                  NSError *,  // error
-                                                  NSHTTPURLResponse *); // raw HTTP response
-
-typedef void (^PELMRemoteMasterBusyBlk)(NSDate *);
-
-typedef void (^PELMRemoteMasterAuthReqdBlk)(HCAuthentication *);
-
-typedef void (^PELMDaoErrorBlk)(NSError *, int, NSString *);
-
-typedef NSDictionary * (^relationsFromResultSetBlk)(FMResultSet *);
-
-typedef id (^entityFromResultSetBlk)(FMResultSet *);
-
-typedef void (^editPrepInvariantChecksBlk)(PELMMainSupport *, PELMMainSupport *);
-
-typedef void (^mainEntityInserterBlk)(PELMMainSupport *, FMDatabase *, PELMDaoErrorBlk);
-
-typedef void (^mainEntityUpdaterBlk)(PELMMainSupport *, FMDatabase *, PELMDaoErrorBlk);
-
-void (^cannotBe)(BOOL, NSString *);
-
-id (^orNil)(id);
-
-void (^LogSyncRemoteMaster)(NSString *, NSInteger);
-
-void (^LogSystemPrune)(NSString *, NSInteger);
-
-void (^LogSyncLocal)(NSString *, NSInteger);
-
-typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
-  PELMSaveNewOrExistingCodeDidNothing,
-  PELMSaveNewOrExistingCodeDidUpdate,
-  PELMSaveNewOrExistingCodeDidInsert
-};
 
 @interface PELMUtils : NSObject
 
@@ -157,7 +97,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
             mainUpdateStmt:(NSString *)mainUpdateStmt
          mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                masterTable:(NSString *)masterTable
-               rsConverter:(entityFromResultSetBlk)rsConverter
+               rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                      error:(PELMDaoErrorBlk)errorBlk;
 
 - (void)saveEntity:(PELMMainSupport *)entity
@@ -184,7 +124,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
                                           masterUpdateStmt:(NSString *)masterUpdateStmt
                                        masterUpdateArgsBlk:(NSArray *(^)(id))masterUpdateArgsBlk
                                                  mainTable:(NSString *)mainTable
-                                   mainEntityFromResultSet:(entityFromResultSetBlk)mainEntityFromResultSet
+                                   mainEntityFromResultSet:(PELMEntityFromResultSetBlk)mainEntityFromResultSet
                                             mainUpdateStmt:(NSString *)mainUpdateStmt
                                          mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                                                      error:(PELMDaoErrorBlk)errorBlk;
@@ -195,7 +135,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
                                           masterUpdateStmt:(NSString *)masterUpdateStmt
                                        masterUpdateArgsBlk:(NSArray *(^)(id))masterUpdateArgsBlk
                                                  mainTable:(NSString *)mainTable
-                                   mainEntityFromResultSet:(entityFromResultSetBlk)mainEntityFromResultSet
+                                   mainEntityFromResultSet:(PELMEntityFromResultSetBlk)mainEntityFromResultSet
                                             mainUpdateStmt:(NSString *)mainUpdateStmt
                                          mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                                                         db:(FMDatabase *)db
@@ -217,7 +157,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
         masterUpdateStmt:(NSString *)masterUpdateStmt
      masterUpdateArgsBlk:(NSArray *(^)(id))masterUpdateArgsBlk
                mainTable:(NSString *)mainTable
- mainEntityFromResultSet:(entityFromResultSetBlk)mainEntityFromResultSet
+ mainEntityFromResultSet:(PELMEntityFromResultSetBlk)mainEntityFromResultSet
           mainUpdateStmt:(NSString *)mainUpdateStmt
        mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                    error:(PELMDaoErrorBlk)errorBlk;
@@ -227,7 +167,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
         masterUpdateStmt:(NSString *)masterUpdateStmt
      masterUpdateArgsBlk:(NSArray *(^)(id))masterUpdateArgsBlk
                mainTable:(NSString *)mainTable
- mainEntityFromResultSet:(entityFromResultSetBlk)mainEntityFromResultSet
+ mainEntityFromResultSet:(PELMEntityFromResultSetBlk)mainEntityFromResultSet
           mainUpdateStmt:(NSString *)mainUpdateStmt
        mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                       db:(FMDatabase *)db
@@ -262,16 +202,16 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
-         parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+         parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                    pageBoundaryWhere:(NSString *)pageBoundaryWhere
                      pageBoundaryArg:(id)pageBoundaryArg
                    entityMasterTable:(NSString *)entityMasterTable
-      masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+      masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
-        mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+        mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                    comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                  orderByDomainColumn:(NSString *)orderByDomainColumn
         orderByDomainColumnDirection:(NSString *)orderByDomainColumnDirection
@@ -280,14 +220,14 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 
 + (NSArray *)unsyncedEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                        parentEntityMainTable:(NSString *)parentEntityMainTable
-                 parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+                 parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
                   parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                     parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                                     pageSize:(NSNumber *)pageSize
                            entityMasterTable:(NSString *)entityMasterTable
-              masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+              masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                              entityMainTable:(NSString *)entityMainTable
-                mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+                mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                            comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                          orderByDomainColumn:(NSString *)orderByDomainColumn
                 orderByDomainColumnDirection:(NSString *)orderByDomainColumnDirection
@@ -296,16 +236,16 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
-         parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+         parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
-      masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+      masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
-        mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+        mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                    comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                  orderByDomainColumn:(NSString *)orderByDomainColumn
         orderByDomainColumnDirection:(NSString *)orderByDomainColumnDirection
@@ -314,22 +254,22 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
-         parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+         parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
-      masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+      masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
-        mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+        mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk;
 
 + (NSInteger)numEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                   parentEntityMainTable:(NSString *)parentEntityMainTable
-            parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+            parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
              parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                       entityMasterTable:(NSString *)entityMasterTable
@@ -339,7 +279,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 
 + (NSInteger)numEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                   parentEntityMainTable:(NSString *)parentEntityMainTable
-            parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+            parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
              parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                       entityMasterTable:(NSString *)entityMasterTable
@@ -354,10 +294,10 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
                   parentEntityMasterTable:(NSString *)parentEntityMasterTable
                  parentEntityMainFkColumn:(NSString *)parentEntityMainFkColumn
                parentEntityMasterFkColumn:(NSString *)parentEntityMasterFkColumn
-              parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
-            parentEntityMasterRsConverter:(entityFromResultSetBlk)parentEntityMasterRsConverter
+              parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
+            parentEntityMasterRsConverter:(PELMEntityFromResultSetBlk)parentEntityMasterRsConverter
                      childEntityMainTable:(NSString *)childEntityMainTable
-               childEntityMainRsConverter:(entityFromResultSetBlk)childEntityMainRsConverter
+               childEntityMainRsConverter:(PELMEntityFromResultSetBlk)childEntityMainRsConverter
                    childEntityMasterTable:(NSString *)childEntityMasterTable
                                        db:(FMDatabase *)db
                                     error:(PELMDaoErrorBlk)errorBlk;
@@ -365,7 +305,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 + (PELMMainSupport *)masterParentForMasterChildEntity:(PELMMainSupport *)childEntity
                               parentEntityMasterTable:(NSString *)parentEntityMasterTable
                            parentEntityMasterFkColumn:(NSString *)parentEntityMasterFkColumn
-                        parentEntityMasterRsConverter:(entityFromResultSetBlk)parentEntityMasterRsConverter
+                        parentEntityMasterRsConverter:(PELMEntityFromResultSetBlk)parentEntityMasterRsConverter
                                childEntityMasterTable:(NSString *)childEntityMasterTable
                                                    db:(FMDatabase *)db
                                                 error:(PELMDaoErrorBlk)errorBlk;
@@ -377,7 +317,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 
 - (void)reloadEntity:(PELMModelSupport *)entity
        fromMainTable:(NSString *)mainTable
-         rsConverter:(entityFromResultSetBlk)rsConverter
+         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                error:(PELMDaoErrorBlk)errorBlk;
 
 + (void)copyMasterEntity:(PELMMainSupport *)entity
@@ -418,14 +358,14 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 
 - (NSArray *)markEntitiesAsSyncInProgressInMainTable:(NSString *)mainTable
                                           usingQuery:(NSString *)query
-                                 entityFromResultSet:(entityFromResultSetBlk)entityFromResultSet
+                                 entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
                                           updateStmt:(NSString *)updateStmt
                                        updateArgsBlk:(NSArray *(^)(PELMMainSupport *))updateArgsBlk
                                            filterBlk:(BOOL(^)(PELMMainSupport *))filterBlk
                                                error:(PELMDaoErrorBlk)errorBlk;
 
 - (NSArray *)markEntitiesAsSyncInProgressInMainTable:(NSString *)mainTable
-                                 entityFromResultSet:(entityFromResultSetBlk)entityFromResultSet
+                                 entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
                                           updateStmt:(NSString *)updateStmt
                                        updateArgsBlk:(NSArray *(^)(PELMMainSupport *))updateArgsBlk
                                                error:(PELMDaoErrorBlk)errorBlk;
@@ -433,16 +373,16 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 + (BOOL)prepareEntityForEdit:(PELMMainSupport *)entity
                           db:(FMDatabase *)db
                    mainTable:(NSString *)mainTable
-         entityFromResultSet:(entityFromResultSetBlk)entityFromResultSet
-          mainEntityInserter:(mainEntityInserterBlk)mainEntityInserter
-           mainEntityUpdater:(mainEntityUpdaterBlk)mainEntityUpdater
+         entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
+          mainEntityInserter:(PELMMainEntityInserterBlk)mainEntityInserter
+           mainEntityUpdater:(PELMMainEntityUpdaterBlk)mainEntityUpdater
                        error:(PELMDaoErrorBlk)errorBlk;
 
 - (BOOL)prepareEntityForEditInTxn:(PELMMainSupport *)entity
                         mainTable:(NSString *)mainTable
-              entityFromResultSet:(entityFromResultSetBlk)entityFromResultSet
-               mainEntityInserter:(mainEntityInserterBlk)mainEntityInserter
-                mainEntityUpdater:(mainEntityUpdaterBlk)mainEntityUpdater
+              entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
+               mainEntityInserter:(PELMMainEntityInserterBlk)mainEntityInserter
+                mainEntityUpdater:(PELMMainEntityUpdaterBlk)mainEntityUpdater
                             error:(PELMDaoErrorBlk)errorBlk;
 
 + (void)invokeError:(PELMDaoErrorBlk)errorBlk db:(FMDatabase *)db;
@@ -494,7 +434,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
 + (id)entityFromQuery:(NSString *)query
           entityTable:(NSString *)entityTable
         localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
-          rsConverter:(entityFromResultSetBlk)rsConverter
+          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                    db:(FMDatabase *)db
                 error:(PELMDaoErrorBlk)errorBlk;
 
@@ -502,34 +442,34 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
           entityTable:(NSString *)entityTable
         localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
             argsArray:(NSArray *)argsArray
-          rsConverter:(entityFromResultSetBlk)rsConverter
+          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                    db:(FMDatabase *)db
                 error:(PELMDaoErrorBlk)errorBlk;
 
 - (id)entityFromQuery:(NSString *)query
           entityTable:(NSString *)entityTable
         localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
-          rsConverter:(entityFromResultSetBlk)rsConverter
+          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                 error:(PELMDaoErrorBlk)errorBlk;
 
 - (id)entityFromQuery:(NSString *)query
           entityTable:(NSString *)entityTable
         localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
             argsArray:(NSArray *)argsArray
-          rsConverter:(entityFromResultSetBlk)rsConverter
+          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                 error:(PELMDaoErrorBlk)errorBlk;
 
 + (NSArray *)mainEntitiesFromQuery:(NSString *)query
                        entityTable:(NSString *)entityTable
                          argsArray:(NSArray *)argsArray
-                       rsConverter:(entityFromResultSetBlk)rsConverter
+                       rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                 db:(FMDatabase *)db
                              error:(PELMDaoErrorBlk)errorBlk;
 
 + (NSArray *)masterEntitiesFromQuery:(NSString *)query
                          entityTable:(NSString *)entityTable
                            argsArray:(NSArray *)argsArray
-                         rsConverter:(entityFromResultSetBlk)rsConverter
+                         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk;
 
@@ -537,7 +477,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
                         numAllowed:(NSNumber *)numAllowed
                        entityTable:(NSString *)entityTable
                          argsArray:(NSArray *)argsArray
-                       rsConverter:(entityFromResultSetBlk)rsConverter
+                       rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                 db:(FMDatabase *)db
                              error:(PELMDaoErrorBlk)errorBlk;
 
@@ -545,7 +485,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
                           numAllowed:(NSNumber *)numAllowed
                          entityTable:(NSString *)entityTable
                            argsArray:(NSArray *)argsArray
-                         rsConverter:(entityFromResultSetBlk)rsConverter
+                         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk;
 
@@ -554,7 +494,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
                    entityTable:(NSString *)entityTable
                  localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
                      argsArray:(NSArray *)argsArray
-                   rsConverter:(entityFromResultSetBlk)rsConverter
+                   rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                             db:(FMDatabase *)db
                          error:(PELMDaoErrorBlk)errorBlk;
 
@@ -562,7 +502,7 @@ typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
                          whereClause:(NSString *)whereClause
                        localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
                            argsArray:(NSArray *)argsArray
-                         rsConverter:(entityFromResultSetBlk)rsConverter
+                         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk;
 

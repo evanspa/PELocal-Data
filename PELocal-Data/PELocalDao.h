@@ -22,11 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <FMDB/FMDatabase.h>
-#import <FMDB/FMDatabaseQueue.h>
-#import "PELMUser.h"
+
 #import "PELMUtils.h"
-#import "PEChangelog.h"
+@class FMDatabase;
+@class FMDatabaseQueue;
+@class PELMUser;
+@class PEChangelog;
 
 typedef void (^PELMProcessChangelogEntitiesBlk)(NSArray *,
                                                 NSString *,

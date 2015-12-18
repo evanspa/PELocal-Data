@@ -30,8 +30,10 @@
 #import <PEHateoas-Client/HCRelation.h>
 #import "PELMNotificationUtils.h"
 #import <CocoaLumberjack/DDLog.h>
+#import <PEHateoas-Client/HCResource.h>
+#import <PEHateoas-Client/HCMediaType.h>
 
-void (^cannotBe)(BOOL, NSString *) = ^(BOOL invariantViolation, NSString *msg) {
+void (^PELMCannotBe)(BOOL, NSString *) = ^(BOOL invariantViolation, NSString *msg) {
   if (invariantViolation) {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:msg
@@ -39,7 +41,7 @@ void (^cannotBe)(BOOL, NSString *) = ^(BOOL invariantViolation, NSString *msg) {
   }
 };
 
-id (^orNil)(id) = ^ id (id someObj) {
+id (^PELMOrNil)(id) = ^ id (id someObj) {
   return [PEUtils orNil:someObj];
 };
 
@@ -305,7 +307,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
             mainUpdateStmt:(NSString *)mainUpdateStmt
          mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                masterTable:(NSString *)masterTable
-               rsConverter:(entityFromResultSetBlk)rsConverter
+               rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                      error:(PELMDaoErrorBlk)errorBlk {
   [entity setEditInProgress:NO];
   NSInteger newEditCount = [entity decrementEditCount];
@@ -400,7 +402,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                                           masterUpdateStmt:(NSString *)masterUpdateStmt
                                        masterUpdateArgsBlk:(NSArray *(^)(id))masterUpdateArgsBlk
                                                  mainTable:(NSString *)mainTable
-                                   mainEntityFromResultSet:(entityFromResultSetBlk)mainEntityFromResultSet
+                                   mainEntityFromResultSet:(PELMEntityFromResultSetBlk)mainEntityFromResultSet
                                             mainUpdateStmt:(NSString *)mainUpdateStmt
                                          mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                                                      error:(PELMDaoErrorBlk)errorBlk {
@@ -427,7 +429,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                                           masterUpdateStmt:(NSString *)masterUpdateStmt
                                        masterUpdateArgsBlk:(NSArray *(^)(id))masterUpdateArgsBlk
                                                  mainTable:(NSString *)mainTable
-                                   mainEntityFromResultSet:(entityFromResultSetBlk)mainEntityFromResultSet
+                                   mainEntityFromResultSet:(PELMEntityFromResultSetBlk)mainEntityFromResultSet
                                             mainUpdateStmt:(NSString *)mainUpdateStmt
                                          mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                                                         db:(FMDatabase *)db
@@ -493,7 +495,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
         masterUpdateStmt:(NSString *)masterUpdateStmt
      masterUpdateArgsBlk:(NSArray *(^)(id))masterUpdateArgsBlk
                mainTable:(NSString *)mainTable
- mainEntityFromResultSet:(entityFromResultSetBlk)mainEntityFromResultSet
+ mainEntityFromResultSet:(PELMEntityFromResultSetBlk)mainEntityFromResultSet
           mainUpdateStmt:(NSString *)mainUpdateStmt
        mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                    error:(PELMDaoErrorBlk)errorBlk {
@@ -518,7 +520,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
         masterUpdateStmt:(NSString *)masterUpdateStmt
      masterUpdateArgsBlk:(NSArray *(^)(id))masterUpdateArgsBlk
                mainTable:(NSString *)mainTable
- mainEntityFromResultSet:(entityFromResultSetBlk)mainEntityFromResultSet
+ mainEntityFromResultSet:(PELMEntityFromResultSetBlk)mainEntityFromResultSet
           mainUpdateStmt:(NSString *)mainUpdateStmt
        mainUpdateArgsBlk:(NSArray *(^)(id))mainUpdateArgsBlk
                       db:(FMDatabase *)db
@@ -664,16 +666,16 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
-         parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+         parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                    pageBoundaryWhere:(NSString *)pageBoundaryWhere
                      pageBoundaryArg:(id)pageBoundaryArg
                    entityMasterTable:(NSString *)entityMasterTable
-      masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+      masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
-        mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+        mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                    comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                  orderByDomainColumn:(NSString *)orderByDomainColumn
         orderByDomainColumnDirection:(NSString *)orderByDomainColumnDirection
@@ -733,16 +735,16 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
-         parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+         parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
-      masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+      masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
-        mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+        mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk {
   return [PELMUtils entitiesForParentEntity:parentEntity
@@ -766,14 +768,14 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)unsyncedEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                        parentEntityMainTable:(NSString *)parentEntityMainTable
-                 parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+                 parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
                   parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                     parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                                     pageSize:(NSNumber *)pageSize
                            entityMasterTable:(NSString *)entityMasterTable
-              masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+              masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                              entityMainTable:(NSString *)entityMainTable
-                mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+                mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                            comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                          orderByDomainColumn:(NSString *)orderByDomainColumn
                 orderByDomainColumnDirection:(NSString *)orderByDomainColumnDirection
@@ -814,16 +816,16 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
-         parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+         parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
-      masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+      masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
-        mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+        mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                    comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                  orderByDomainColumn:(NSString *)orderByDomainColumn
         orderByDomainColumnDirection:(NSString *)orderByDomainColumnDirection
@@ -886,14 +888,14 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
-         parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+         parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                    entityMasterTable:(NSString *)entityMasterTable
-      masterEntityResultSetConverter:(entityFromResultSetBlk)masterEntityResultSetConverter
+      masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
-        mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+        mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
               masterQueryTransformer:(NSString *(^)(NSString *))masterQueryTransformer
           masterArgsArrayTransformer:(NSArray *(^)(NSArray *))masterArgsArrayTransformer
                 mainQueryTransformer:(NSString *(^)(NSString *))mainQueryTransformer
@@ -1038,12 +1040,12 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)unsyncedEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                        parentEntityMainTable:(NSString *)parentEntityMainTable
-                 parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+                 parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
                     parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                                     pageSize:(NSNumber *)pageSize
                            entityMasterTable:(NSString *)entityMasterTable
                              entityMainTable:(NSString *)entityMainTable
-                mainEntityResultSetConverter:(entityFromResultSetBlk)mainEntityResultSetConverter
+                mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                         mainQueryTransformer:(NSString *(^)(NSString *))mainQueryTransformer
                     mainArgsArrayTransformer:(NSArray *(^)(NSArray *))mainArgsArrayTransformer
                               entitiesFilter:(NSArray *(^)(NSArray *))entitiesFilter
@@ -1100,7 +1102,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSInteger)numEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                   parentEntityMainTable:(NSString *)parentEntityMainTable
-            parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+            parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
              parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                       entityMasterTable:(NSString *)entityMasterTable
@@ -1144,7 +1146,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSInteger)numEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                   parentEntityMainTable:(NSString *)parentEntityMainTable
-            parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+            parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
              parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                       entityMasterTable:(NSString *)entityMasterTable
@@ -1168,7 +1170,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSInteger)numEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                   parentEntityMainTable:(NSString *)parentEntityMainTable
-            parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
+            parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
              parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                       entityMasterTable:(NSString *)entityMasterTable
@@ -1253,10 +1255,10 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                   parentEntityMasterTable:(NSString *)parentEntityMasterTable
                  parentEntityMainFkColumn:(NSString *)parentEntityMainFkColumn
                parentEntityMasterFkColumn:(NSString *)parentEntityMasterFkColumn
-              parentEntityMainRsConverter:(entityFromResultSetBlk)parentEntityMainRsConverter
-            parentEntityMasterRsConverter:(entityFromResultSetBlk)parentEntityMasterRsConverter
+              parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
+            parentEntityMasterRsConverter:(PELMEntityFromResultSetBlk)parentEntityMasterRsConverter
                      childEntityMainTable:(NSString *)childEntityMainTable
-               childEntityMainRsConverter:(entityFromResultSetBlk)childEntityMainRsConverter
+               childEntityMainRsConverter:(PELMEntityFromResultSetBlk)childEntityMainRsConverter
                    childEntityMasterTable:(NSString *)childEntityMasterTable
                                        db:(FMDatabase *)db
                                     error:(PELMDaoErrorBlk)errorBlk {
@@ -1357,7 +1359,7 @@ WHERE masparent.%@ IN (SELECT child.%@ \
 + (PELMMainSupport *)masterParentForMasterChildEntity:(PELMMainSupport *)childEntity
                               parentEntityMasterTable:(NSString *)parentEntityMasterTable
                            parentEntityMasterFkColumn:(NSString *)parentEntityMasterFkColumn
-                        parentEntityMasterRsConverter:(entityFromResultSetBlk)parentEntityMasterRsConverter
+                        parentEntityMasterRsConverter:(PELMEntityFromResultSetBlk)parentEntityMasterRsConverter
                                childEntityMasterTable:(NSString *)childEntityMasterTable
                                                    db:(FMDatabase *)db
                                                 error:(PELMDaoErrorBlk)errorBlk {
@@ -1431,7 +1433,7 @@ ID: [%@].", foundLocalId, localId, [entity globalIdentifier]]
 
 - (void)reloadEntity:(PELMModelSupport *)entity
        fromMainTable:(NSString *)mainTable
-         rsConverter:(entityFromResultSetBlk)rsConverter
+         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                error:(PELMDaoErrorBlk)errorBlk {
   [_databaseQueue inDatabase:^(FMDatabase *db) {
     [PELMUtils reloadEntity:entity
@@ -1444,7 +1446,7 @@ ID: [%@].", foundLocalId, localId, [entity globalIdentifier]]
 
 + (void)reloadEntity:(PELMModelSupport *)entity
        fromMainTable:(NSString *)mainTable
-         rsConverter:(entityFromResultSetBlk)rsConverter
+         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                   db:db
                error:(PELMDaoErrorBlk)errorBlk {
   NSString *globalIdentifier = [entity globalIdentifier];
@@ -1599,7 +1601,7 @@ Entity: %@", entity]
 
 - (NSArray *)markEntitiesAsSyncInProgressInMainTable:(NSString *)mainTable
                                           usingQuery:(NSString *)query
-                                 entityFromResultSet:(entityFromResultSetBlk)entityFromResultSet
+                                 entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
                                           updateStmt:(NSString *)updateStmt
                                        updateArgsBlk:(NSArray *(^)(PELMMainSupport *))updateArgsBlk
                                            filterBlk:(BOOL(^)(PELMMainSupport *))filterBlk
@@ -1652,7 +1654,7 @@ Entity: %@", entity]
 }
 
 - (NSArray *)markEntitiesAsSyncInProgressInMainTable:(NSString *)mainTable
-                                 entityFromResultSet:(entityFromResultSetBlk)entityFromResultSet
+                                 entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
                                           updateStmt:(NSString *)updateStmt
                                        updateArgsBlk:(NSArray *(^)(PELMMainSupport *))updateArgsBlk
                                                error:(PELMDaoErrorBlk)errorBlk {
@@ -1668,9 +1670,9 @@ Entity: %@", entity]
 + (BOOL)prepareEntityForEdit:(PELMMainSupport *)entity
                           db:(FMDatabase *)db
                    mainTable:(NSString *)mainTable
-         entityFromResultSet:(entityFromResultSetBlk)entityFromResultSet
-          mainEntityInserter:(mainEntityInserterBlk)mainEntityInserter
-           mainEntityUpdater:(mainEntityUpdaterBlk)mainEntityUpdater
+         entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
+          mainEntityInserter:(PELMMainEntityInserterBlk)mainEntityInserter
+           mainEntityUpdater:(PELMMainEntityUpdaterBlk)mainEntityUpdater
                        error:(PELMDaoErrorBlk)errorBlk {
   void (^actionIfEntityNotInMain)(void) = ^{
     [entity setEditInProgress:YES];
@@ -1723,9 +1725,9 @@ Entity: %@", entity]
 
 - (BOOL)prepareEntityForEditInTxn:(PELMMainSupport *)entity
                         mainTable:(NSString *)mainTable
-              entityFromResultSet:(entityFromResultSetBlk)entityFromResultSet
-               mainEntityInserter:(mainEntityInserterBlk)mainEntityInserter
-                mainEntityUpdater:(mainEntityUpdaterBlk)mainEntityUpdater
+              entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
+               mainEntityInserter:(PELMMainEntityInserterBlk)mainEntityInserter
+                mainEntityUpdater:(PELMMainEntityUpdaterBlk)mainEntityUpdater
                             error:(PELMDaoErrorBlk)errorBlk {
   NSAssert([entity localMainIdentifier], @"Entity does not have a localMainIdentifier.");
   __block BOOL returnVal;
@@ -1965,7 +1967,7 @@ Entity: %@", entity]
 + (id)entityFromQuery:(NSString *)query
           entityTable:(NSString *)entityTable
         localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
-          rsConverter:(entityFromResultSetBlk)rsConverter
+          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                    db:(FMDatabase *)db
                 error:(PELMDaoErrorBlk)errorBlk {
   return [self entityFromQuery:query
@@ -1981,7 +1983,7 @@ Entity: %@", entity]
           entityTable:(NSString *)entityTable
         localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
             argsArray:(NSArray *)argsArray
-          rsConverter:(entityFromResultSetBlk)rsConverter
+          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                    db:(FMDatabase *)db
                 error:(PELMDaoErrorBlk)errorBlk {
   id entity = nil;
@@ -2005,7 +2007,7 @@ Entity: %@", entity]
 - (id)entityFromQuery:(NSString *)query
           entityTable:(NSString *)entityTable
         localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
-          rsConverter:(entityFromResultSetBlk)rsConverter
+          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                 error:(PELMDaoErrorBlk)errorBlk {
   return [self entityFromQuery:query
                    entityTable:entityTable
@@ -2019,7 +2021,7 @@ Entity: %@", entity]
           entityTable:(NSString *)entityTable
         localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
             argsArray:(NSArray *)argsArray
-          rsConverter:(entityFromResultSetBlk)rsConverter
+          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                 error:(PELMDaoErrorBlk)errorBlk {
   __block id entity = nil;
   [_databaseQueue inDatabase:^(FMDatabase *db) {
@@ -2037,7 +2039,7 @@ Entity: %@", entity]
 + (NSArray *)mainEntitiesFromQuery:(NSString *)query
                        entityTable:(NSString *)entityTable
                          argsArray:(NSArray *)argsArray
-                       rsConverter:(entityFromResultSetBlk)rsConverter
+                       rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                 db:(FMDatabase *)db
                              error:(PELMDaoErrorBlk)errorBlk {
   return [PELMUtils mainEntitiesFromQuery:query
@@ -2052,7 +2054,7 @@ Entity: %@", entity]
 + (NSArray *)masterEntitiesFromQuery:(NSString *)query
                          entityTable:(NSString *)entityTable
                            argsArray:(NSArray *)argsArray
-                         rsConverter:(entityFromResultSetBlk)rsConverter
+                         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk {
   return [PELMUtils masterEntitiesFromQuery:query
@@ -2068,7 +2070,7 @@ Entity: %@", entity]
                         numAllowed:(NSNumber *)numAllowed
                        entityTable:(NSString *)entityTable
                          argsArray:(NSArray *)argsArray
-                       rsConverter:(entityFromResultSetBlk)rsConverter
+                       rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                 db:(FMDatabase *)db
                              error:(PELMDaoErrorBlk)errorBlk {
   return [PELMUtils entitiesFromQuery:query
@@ -2085,7 +2087,7 @@ Entity: %@", entity]
                           numAllowed:(NSNumber *)numAllowed
                          entityTable:(NSString *)entityTable
                            argsArray:(NSArray *)argsArray
-                         rsConverter:(entityFromResultSetBlk)rsConverter
+                         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk {
   return [PELMUtils entitiesFromQuery:query
@@ -2103,7 +2105,7 @@ Entity: %@", entity]
                    entityTable:(NSString *)entityTable
                  localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
                      argsArray:(NSArray *)argsArray
-                   rsConverter:(entityFromResultSetBlk)rsConverter
+                   rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                             db:(FMDatabase *)db
                          error:(PELMDaoErrorBlk)errorBlk {
   NSMutableArray *entities = [NSMutableArray array];
@@ -2138,7 +2140,7 @@ Entity: %@", entity]
                          whereClause:(NSString *)whereClause
                        localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
                            argsArray:(NSArray *)argsArray
-                         rsConverter:(entityFromResultSetBlk)rsConverter
+                         rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk {
   NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@",

@@ -22,9 +22,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "PELocalDao.h"
-#import "PERemoteMasterDao.h"
-#import "PEAuthTokenDelegate.h"
+#import "PELMDefs.h"
+
+@protocol PELocalDao;
+@protocol PERemoteMasterDao;
+@protocol PEAuthTokenDelegate;
+@class PELMUser;
+@class PEChangelog;
 
 typedef void (^PESavedNewEntityCompletionHandler)(PELMUser *, NSError *);
 

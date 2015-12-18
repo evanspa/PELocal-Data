@@ -24,6 +24,17 @@
 
 #import "PERestRemoteMasterDao.h"
 #import "PELMLoginUser.h"
+#import <PEHateoas-Client/HCResource.h>
+#import <PEHateoas-Client/HCAuthorization.h>
+#import <PEHateoas-Client/HCRelationExecutor.h>
+#import <PEHateoas-Client/HCRelation.h>
+#import "PELMUser.h"
+#import "PELoginSerializer.h"
+#import "PEChangelogSerializer.h"
+#import "PELogoutSerializer.h"
+#import "PEResendVerificationEmailSerializer.h"
+#import "PEPasswordResetSerializer.h"
+#import "PEUserSerializer.h"
 
 NSString * const LAST_MODIFIED_HEADER = @"last-modified";
 

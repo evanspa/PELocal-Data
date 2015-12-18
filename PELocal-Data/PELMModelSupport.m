@@ -25,6 +25,7 @@
 #import "PELMModelSupport.h"
 #import <PEObjc-Commons/PEUtils.h>
 #import <PEHateoas-Client/HCRelation.h>
+#import <PEHateoas-Client/HCMediaType.h>
 #import "PELMUtils.h"
 
 @implementation PELMModelSupport

@@ -23,18 +23,23 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <PEHateoas-Client/HCMediaType.h>
-#import <PEHateoas-Client/HCCharset.h>
-#import <PEHateoas-Client/HCRelationExecutor.h>
-#import <PEHateoas-Client/HCUtils.h>
-#import <PEHateoas-Client/HCRelation.h>
+
 #import "PERemoteMasterDao.h"
-#import "PEUserSerializer.h"
-#import "PEChangelogSerializer.h"
-#import "PELoginSerializer.h"
-#import "PELogoutSerializer.h"
-#import "PEResendVerificationEmailSerializer.h"
-#import "PEPasswordResetSerializer.h"
+#import <PEHateoas-Client/HCDefs.h>
+
+@class HCMediaType;
+@class HCCharset;
+@class HCRelationExecutor;
+@class HCRelation;
+@class HCResource;
+@class HCAuthorization;
+@class PEUserSerializer;
+@class PEChangelogSerializer;
+@class PELoginSerializer;
+@class PELogoutSerializer;
+@class PEResendVerificationEmailSerializer;
+@class PEPasswordResetSerializer;
+@protocol HCResourceSerializer;
 
 FOUNDATION_EXPORT NSString * const LAST_MODIFIED_HEADER;
 
