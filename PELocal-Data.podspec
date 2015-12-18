@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "PELocal-Data"
-  s.version      = "0.0.4"
+  s.version      = "0.0.5"
   s.license      = "MIT"
   s.summary      = "An iOS static library facilitating the maintenance of a sync-able, SQLite database instance."
   s.author       = { "Paul Evans" => "evansp2@gmail.com" }
@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES'}
   s.dependency 'PEObjc-Commons', '~> 1.0.101'
   s.dependency 'FMDB', '~> 2.5'
-  s.dependency 'PEHateoas-Client', '~> 1.0.11'
+  s.dependency 'PEHateoas-Client', '~> 1.0.12'
   s.dependency 'CocoaLumberjack', '~> 1.9'
 end

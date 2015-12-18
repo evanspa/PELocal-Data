@@ -23,11 +23,11 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "HCMediaType.h"
-#import "HCCharset.h"
-#import "HCRelationExecutor.h"
-#import "HCUtils.h"
-#import "HCRelation.h"
+#import <PEHateoas-Client/HCMediaType.h>
+#import <PEHateoas-Client/HCCharset.h>
+#import <PEHateoas-Client/HCRelationExecutor.h>
+#import <PEHateoas-Client/HCUtils.h>
+#import <PEHateoas-Client/HCRelation.h>
 #import "PERemoteMasterDao.h"
 #import "PEUserSerializer.h"
 #import "PEChangelogSerializer.h"
