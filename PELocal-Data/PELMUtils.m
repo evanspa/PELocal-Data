@@ -34,6 +34,7 @@
 #import "PELMDDL.h"
 #import "PELMNotificationUtils.h"
 #import "PELMMainSupport.h"
+#import "PELMNotificationNames.h"
 
 void (^PELMCannotBe)(BOOL, NSString *) = ^(BOOL invariantViolation, NSString *msg) {
   if (invariantViolation) {
@@ -78,6 +79,12 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
     _databaseQueue = databaseQueue;
   }
   return self;
+}
+
+#pragma mark - Notifications
+
++ (void)postDbUpdateNotification {
+  [[NSNotificationCenter defaultCenter] postNotificationName:PELMNotificationDbUpdate object:self];
 }
 
 #pragma mark - Completion Handler Makers
@@ -233,9 +240,8 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 + (void)cancelSyncInProgressForEntityTable:(NSString *)mainEntityTable
                                         db:(FMDatabase *)db
                                      error:(PELMDaoErrorBlk)error {
-  [db executeUpdate:[NSString stringWithFormat:@"UPDATE %@ SET %@ = 0",
-                     mainEntityTable,
-                     COL_MAN_SYNC_IN_PROGRESS]];
+  [db executeUpdate:[NSString stringWithFormat:@"UPDATE %@ SET %@ = 0", mainEntityTable, COL_MAN_SYNC_IN_PROGRESS]];
+  [PELMUtils postDbUpdateNotification];
 }
 
 #pragma mark - Result Set Helpers
@@ -336,6 +342,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
     } else {
       [db executeUpdate:[NSString stringWithFormat:@"UPDATE %@ SET %@ = 0, %@ = ? WHERE %@ = ?", mainTable, COL_MAN_EDIT_IN_PROGRESS, COL_MAN_EDIT_COUNT, COL_LOCAL_ID]
    withArgumentsInArray:@[@([entity editCount]), [entity localMainIdentifier]]];
+      [PELMUtils postDbUpdateNotification];
     }
   }];
   if (shouldPrune && !pruneSuccess) {
@@ -1927,6 +1934,7 @@ Entity: %@", entity]
            error:(PELMDaoErrorBlk)errorBlk {
   if ([db executeUpdate:stmt withArgumentsInArray:argsArray]) {
     idAssigner(entity, [NSNumber numberWithLongLong:[db lastInsertRowId]]);
+    [PELMUtils postDbUpdateNotification];
   } else {
     [self invokeError:errorBlk db:db];
   }
@@ -1942,7 +1950,9 @@ Entity: %@", entity]
        argsArray:(NSArray *)argsArray
               db:(FMDatabase *)db
            error:(PELMDaoErrorBlk)errorBlk {
-  if (![db executeUpdate:stmt withArgumentsInArray:argsArray]) {
+  if ([db executeUpdate:stmt withArgumentsInArray:argsArray]) {
+    [PELMUtils postDbUpdateNotification];
+  } else {
     [self invokeError:errorBlk db:db];
   }
 }
