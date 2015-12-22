@@ -682,6 +682,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                    pageBoundaryWhere:(NSString *)pageBoundaryWhere
                      pageBoundaryArg:(id)pageBoundaryArg
                    entityMasterTable:(NSString *)entityMasterTable
+                      addlJoinTables:(NSArray *)addlJoinTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
@@ -730,6 +731,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                    parentEntityMainIdColumn:parentEntityMainIdColumn
                                    pageSize:pageSize
                           entityMasterTable:entityMasterTable
+                             addlJoinTables:addlJoinTables
              masterEntityResultSetConverter:masterEntityResultSetConverter
                             entityMainTable:entityMainTable
                mainEntityResultSetConverter:mainEntityResultSetConverter
@@ -751,6 +753,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
+                      addlJoinTables:(NSArray *)addlJoinTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
@@ -765,6 +768,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                                    whereBlk:whereBlk
                                   whereArgs:whereArgs
                           entityMasterTable:entityMasterTable
+                             addlJoinTables:addlJoinTables
              masterEntityResultSetConverter:masterEntityResultSetConverter
                             entityMainTable:entityMainTable
                mainEntityResultSetConverter:mainEntityResultSetConverter
@@ -782,6 +786,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                     parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                                     pageSize:(NSNumber *)pageSize
                            entityMasterTable:(NSString *)entityMasterTable
+                              addlJoinTables:(NSArray *)addlJoinTables
               masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                              entityMainTable:(NSString *)entityMainTable
                 mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
@@ -814,6 +819,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                            parentEntityMainIdColumn:parentEntityMainIdColumn
                                            pageSize:pageSize
                                   entityMasterTable:entityMasterTable
+                                     addlJoinTables:addlJoinTables
                                     entityMainTable:entityMainTable
                        mainEntityResultSetConverter:mainEntityResultSetConverter
                                mainQueryTransformer:mainQueryTransformer
@@ -832,6 +838,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
+                      addlJoinTables:(NSArray *)addlJoinTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
@@ -883,6 +890,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                    parentEntityMainIdColumn:parentEntityMainIdColumn
                                    pageSize:pageSize
                           entityMasterTable:entityMasterTable
+                             addlJoinTables:addlJoinTables
              masterEntityResultSetConverter:masterEntityResultSetConverter
                             entityMainTable:entityMainTable
                mainEntityResultSetConverter:mainEntityResultSetConverter
@@ -895,6 +903,24 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                                       error:errorBlk];
 }
 
++ (void)incorporateJoinTables:(NSArray *)joinTables
+             intoSelectClause:(NSMutableString *)selectClause
+                   fromClause:(NSMutableString *)fromClause
+                  whereClause:(NSMutableString *)whereClause
+            entityTablePrefix:(NSString *)entityTablePrefix {
+  if (joinTables) {
+    for (NSArray *joinTable in joinTables) {
+      NSString *joinTablePrefix = joinTable[0];
+      NSString *joinTableName = joinTable[1];
+      NSString *joinEntityColumnName = joinTable[2];
+      NSString *joinTargetColumnName = joinTable[3];
+      [selectClause appendFormat:@", %@.*", joinTablePrefix];
+      [fromClause appendFormat:@", %@ %@", joinTableName, joinTablePrefix];
+      [whereClause appendFormat:@" AND %@.%@ = %@.%@", entityTablePrefix, joinEntityColumnName, joinTablePrefix, joinTargetColumnName];
+    }
+  }
+}
+
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
          parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
@@ -902,6 +928,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                    entityMasterTable:(NSString *)entityMasterTable
+                      addlJoinTables:(NSArray *)addlJoinTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
@@ -920,30 +947,26 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
   NSMutableArray *entities = [NSMutableArray array];
   if ([parentEntity localMasterIdentifier]) {
     NSArray *argsArray = @[[parentEntity localMasterIdentifier]];
-    NSString *qry = [NSString stringWithFormat:@"SELECT mstr.* FROM %@ mstr WHERE mstr.%@ = ? AND mstr.%@ IS NULL",
-                     entityMasterTable,
-                     parentEntityMasterIdColumn,
-                     COL_MST_DELETED_DT];
+    NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT mstr.*"];
+    NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ mstr", entityMasterTable];
+    NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE mstr.%@ = ? AND mstr.%@ IS NULL", parentEntityMasterIdColumn, COL_MST_DELETED_DT];
     if ([parentEntity localMainIdentifier]) {
-      qry = [NSString stringWithFormat:@"\
-             SELECT mstr.* \
-             FROM %@ mstr \
-             WHERE mstr.%@ = ? AND \
-                   mstr.%@ NOT IN (SELECT man.%@ \
-                                   FROM %@ man \
-                                   WHERE man.%@ = ? AND \
-                                         man.%@ IS NOT NULL) AND \
-                   mstr.%@ IS NULL",
-             entityMasterTable,
-             parentEntityMasterIdColumn,
-             COL_GLOBAL_ID,
-             COL_GLOBAL_ID,
-             entityMainTable,
-             parentEntityMainIdColumn,
-             COL_GLOBAL_ID,
-             COL_MST_DELETED_DT];
+      whereClause = [NSMutableString stringWithFormat:@" WHERE mstr.%@ = ? AND \
+mstr.%@ NOT IN (SELECT man.%@ \
+                FROM %@ man \
+                WHERE man.%@ = ? AND \
+                     man.%@ IS NOT NULL) AND mstr.%@ IS NULL",
+                     parentEntityMasterIdColumn,
+                     COL_GLOBAL_ID,
+                     COL_GLOBAL_ID,
+                     entityMainTable,
+                     parentEntityMainIdColumn,
+                     COL_GLOBAL_ID,
+                     COL_MST_DELETED_DT];
       argsArray = @[[parentEntity localMasterIdentifier], [parentEntity localMainIdentifier]];
     }
+    [PELMUtils incorporateJoinTables:addlJoinTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"mstr"];
+    NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     qry = masterQueryTransformer(qry);
     argsArray = masterArgsArrayTransformer(argsArray);
     NSArray *masterEntities =
@@ -993,8 +1016,12 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
       }
     }
   }
-  if ([parentEntity localMainIdentifier]) {
-    NSString *qry = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ = ?", entityMainTable, parentEntityMainIdColumn];
+  if ([parentEntity localMainIdentifier]) {    
+    NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT man.*"];
+    NSMutableString *fromClause = [NSMutableString stringWithFormat:@" FROM %@ man", entityMainTable];
+    NSMutableString *whereClause = [NSMutableString stringWithFormat:@" WHERE man.%@ = ?", parentEntityMainIdColumn];
+    [PELMUtils incorporateJoinTables:addlJoinTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
+    NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     NSArray *argsArray = @[[parentEntity localMainIdentifier]];
     qry = mainQueryTransformer(qry);
     argsArray = mainArgsArrayTransformer(argsArray);
@@ -1053,6 +1080,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                     parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                                     pageSize:(NSNumber *)pageSize
                            entityMasterTable:(NSString *)entityMasterTable
+                              addlJoinTables:(NSArray *)addlJoinTables
                              entityMainTable:(NSString *)entityMainTable
                 mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                         mainQueryTransformer:(NSString *(^)(NSString *))mainQueryTransformer
@@ -1067,13 +1095,11 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                     error:errorBlk];
   NSMutableArray *entities = [NSMutableArray array];
   if ([parentEntity localMainIdentifier]) {
-    NSString *qry = [NSString stringWithFormat:@"\
-                     SELECT * \
-                     FROM %@ \
-                     WHERE %@ = ? AND \
-                           %@ = 0", entityMainTable,
-                     parentEntityMainIdColumn,
-                     COL_MAN_SYNCED];
+    NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT man.*"];
+    NSMutableString *fromClause = [NSMutableString stringWithFormat:@" FROM %@ man", entityMainTable];
+    NSMutableString *whereClause = [NSMutableString stringWithFormat:@" WHERE man.%@ = ? AND man.%@ = 0", parentEntityMainIdColumn, COL_MAN_SYNCED];
+    [PELMUtils incorporateJoinTables:addlJoinTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
+    NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     NSArray *argsArray = @[[parentEntity localMainIdentifier]];
     qry = mainQueryTransformer(qry);
     argsArray = mainArgsArrayTransformer(argsArray);

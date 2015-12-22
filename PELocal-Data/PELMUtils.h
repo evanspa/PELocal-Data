@@ -208,6 +208,7 @@
                    pageBoundaryWhere:(NSString *)pageBoundaryWhere
                      pageBoundaryArg:(id)pageBoundaryArg
                    entityMasterTable:(NSString *)entityMasterTable
+                      addlJoinTables:(NSArray *)addlJoinTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
@@ -224,6 +225,7 @@
                     parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                                     pageSize:(NSNumber *)pageSize
                            entityMasterTable:(NSString *)entityMasterTable
+                              addlJoinTables:(NSArray *)addlJoinTables
               masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                              entityMainTable:(NSString *)entityMainTable
                 mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
@@ -242,6 +244,7 @@
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
+                      addlJoinTables:(NSArray *)addlJoinTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
@@ -260,6 +263,7 @@
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
+                      addlJoinTables:(NSArray *)addlJoinTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
