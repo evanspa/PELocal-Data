@@ -48,6 +48,7 @@
 		CA40E6A61C25122600E30AAA /* PELMNotificationNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PELMNotificationNames.h; sourceTree = SOURCE_ROOT; };
 		CA40E6A71C25122600E30AAA /* PELMNotificationNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PELMNotificationNames.m; sourceTree = SOURCE_ROOT; };
 		CA46909C1C1BBC3800E4718E /* libPELocal-Data.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPELocal-Data.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA48D1C21C2ADAB000FFD650 /* PELMIdentifiable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PELMIdentifiable.h; sourceTree = SOURCE_ROOT; };
 		CA5CCA5F1C21182000C64B3F /* PELMUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PELMUtils.h; path = "PELocal-Data/PELMUtils.h"; sourceTree = SOURCE_ROOT; };
 		CA5CCA601C21182000C64B3F /* PELMUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PELMUtils.m; path = "PELocal-Data/PELMUtils.m"; sourceTree = SOURCE_ROOT; };
 		CA5CCA621C21183400C64B3F /* PELMMainSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PELMMainSupport.h; path = "PELocal-Data/PELMMainSupport.h"; sourceTree = SOURCE_ROOT; };
@@ -140,6 +141,7 @@
 		CA3ECDDD1C21042500E9FDA3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CA48D1C11C2ADA9800FFD650 /* Identifiable */,
 				CA3ECDE71C2104A900E9FDA3 /* Base Change Log */,
 				CA3ECDE61C2104A200E9FDA3 /* Login User */,
 				CA3ECDE51C21049A00E9FDA3 /* Base User */,
@@ -357,6 +359,14 @@
 			);
 			name = "PELocal-Data";
 			path = PELocalData;
+			sourceTree = "<group>";
+		};
+		CA48D1C11C2ADA9800FFD650 /* Identifiable */ = {
+			isa = PBXGroup;
+			children = (
+				CA48D1C21C2ADAB000FFD650 /* PELMIdentifiable.h */,
+			);
+			name = Identifiable;
 			sourceTree = "<group>";
 		};
 		CA5CCA871C21194000C64B3F /* User Serializer */ = {

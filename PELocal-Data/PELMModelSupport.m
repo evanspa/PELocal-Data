@@ -60,7 +60,9 @@
   [self setMediaType:[entity mediaType]];
 }
 
-- (BOOL)doesHaveEqualIdentifiers:(PELMModelSupport *)entity {
+#pragma mark - PELMIdentifiable Protocol
+
+- (BOOL)doesHaveEqualIdentifiers:(id<PELMIdentifiable>)entity {
   if (_localMainIdentifier && [entity localMainIdentifier]) {
     return ([_localMainIdentifier isEqualToNumber:[entity localMainIdentifier]]);
   } else if (_globalIdentifier && [entity globalIdentifier]) {

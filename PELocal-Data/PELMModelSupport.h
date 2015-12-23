@@ -25,7 +25,9 @@
 @import Foundation;
 @class HCMediaType;
 
-@interface PELMModelSupport : NSObject
+#import "PELMIdentifiable.h"
+
+@interface PELMModelSupport : NSObject<PELMIdentifiable>
 
 #pragma mark - Initializers
 
@@ -40,8 +42,6 @@
 #pragma mark - Methods
 
 - (void)overwrite:(PELMModelSupport *)entity;
-
-- (BOOL)doesHaveEqualIdentifiers:(PELMModelSupport *)entity;
 
 #pragma mark - Properties
 
