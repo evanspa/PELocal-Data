@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "PELocal-Data"
-  s.version      = "0.0.11"
+  s.version      = "0.0.12"
   s.license      = "MIT"
   s.summary      = "An iOS static library facilitating the maintenance of a sync-able, SQLite database instance."
   s.author       = { "Paul Evans" => "evansp2@gmail.com" }

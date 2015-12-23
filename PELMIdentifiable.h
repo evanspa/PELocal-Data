@@ -26,6 +26,8 @@
 
 - (BOOL)doesHaveEqualIdentifiers:(id<PELMIdentifiable>)entity;
 
+@optional
+
 - (NSNumber *)localMainIdentifier;
 
 - (NSNumber *)localMasterIdentifier;
