@@ -675,6 +675,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
+      addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
          parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
@@ -682,9 +683,10 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                    pageBoundaryWhere:(NSString *)pageBoundaryWhere
                      pageBoundaryArg:(id)pageBoundaryArg
                    entityMasterTable:(NSString *)entityMasterTable
-                      addlJoinTables:(NSArray *)addlJoinTables
+          addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
+            addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                    comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                  orderByDomainColumn:(NSString *)orderByDomainColumn
@@ -726,14 +728,16 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
   }
   return [PELMUtils entitiesForParentEntity:parentEntity
                       parentEntityMainTable:parentEntityMainTable
+             addlJoinParentEntityMainTables:addlJoinParentEntityMainTables
                 parentEntityMainRsConverter:parentEntityMainRsConverter
                  parentEntityMasterIdColumn:parentEntityMasterIdColumn
                    parentEntityMainIdColumn:parentEntityMainIdColumn
                                    pageSize:pageSize
                           entityMasterTable:entityMasterTable
-                             addlJoinTables:addlJoinTables
+                 addlJoinEntityMasterTables:addlJoinEntityMasterTables
              masterEntityResultSetConverter:masterEntityResultSetConverter
                             entityMainTable:entityMainTable
+                   addlJoinEntityMainTables:addlJoinEntityMainTables
                mainEntityResultSetConverter:mainEntityResultSetConverter
                      masterQueryTransformer:masterQueryTransformer
                  masterArgsArrayTransformer:argsArrayTransformer
@@ -746,6 +750,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
+      addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
          parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
@@ -753,14 +758,16 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
-                      addlJoinTables:(NSArray *)addlJoinTables
+          addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
+            addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk {
   return [PELMUtils entitiesForParentEntity:parentEntity
                       parentEntityMainTable:parentEntityMainTable
+             addlJoinParentEntityMainTables:addlJoinParentEntityMainTables
                 parentEntityMainRsConverter:parentEntityMainRsConverter
                  parentEntityMasterIdColumn:parentEntityMasterIdColumn
                    parentEntityMainIdColumn:parentEntityMainIdColumn
@@ -768,9 +775,10 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                                    whereBlk:whereBlk
                                   whereArgs:whereArgs
                           entityMasterTable:entityMasterTable
-                             addlJoinTables:addlJoinTables
+                 addlJoinEntityMasterTables:addlJoinEntityMasterTables
              masterEntityResultSetConverter:masterEntityResultSetConverter
                             entityMainTable:entityMainTable
+                   addlJoinEntityMainTables:addlJoinEntityMainTables
                mainEntityResultSetConverter:mainEntityResultSetConverter
                           comparatorForSort:nil
                         orderByDomainColumn:nil
@@ -781,14 +789,16 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)unsyncedEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                        parentEntityMainTable:(NSString *)parentEntityMainTable
+              addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
                  parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
                   parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                     parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                                     pageSize:(NSNumber *)pageSize
                            entityMasterTable:(NSString *)entityMasterTable
-                              addlJoinTables:(NSArray *)addlJoinTables
+                  addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
               masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                              entityMainTable:(NSString *)entityMainTable
+                    addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
                 mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                            comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                          orderByDomainColumn:(NSString *)orderByDomainColumn
@@ -815,12 +825,14 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
   }
   return [PELMUtils unsyncedEntitiesForParentEntity:parentEntity
                               parentEntityMainTable:parentEntityMainTable
+                     addlJoinParentEntityMainTables:addlJoinParentEntityMainTables
                         parentEntityMainRsConverter:parentEntityMainRsConverter
                            parentEntityMainIdColumn:parentEntityMainIdColumn
                                            pageSize:pageSize
                                   entityMasterTable:entityMasterTable
-                                     addlJoinTables:addlJoinTables
+                         addlJoinEntityMasterTables:addlJoinEntityMasterTables
                                     entityMainTable:entityMainTable
+                           addlJoinEntityMainTables:addlJoinEntityMainTables
                        mainEntityResultSetConverter:mainEntityResultSetConverter
                                mainQueryTransformer:mainQueryTransformer
                            mainArgsArrayTransformer:argsArrayTransformer
@@ -831,6 +843,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
+      addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
          parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
@@ -838,9 +851,10 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                             whereBlk:(NSString *(^)(NSString *))whereBlk
                            whereArgs:(NSArray *)whereArgs
                    entityMasterTable:(NSString *)entityMasterTable
-                      addlJoinTables:(NSArray *)addlJoinTables
+          addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
+            addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                    comparatorForSort:(NSComparisonResult(^)(id, id))comparatorForSort
                  orderByDomainColumn:(NSString *)orderByDomainColumn
@@ -885,14 +899,16 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
   }
   return [PELMUtils entitiesForParentEntity:parentEntity
                       parentEntityMainTable:parentEntityMainTable
+             addlJoinParentEntityMainTables:addlJoinParentEntityMainTables
                 parentEntityMainRsConverter:parentEntityMainRsConverter
                  parentEntityMasterIdColumn:parentEntityMasterIdColumn
                    parentEntityMainIdColumn:parentEntityMainIdColumn
                                    pageSize:pageSize
                           entityMasterTable:entityMasterTable
-                             addlJoinTables:addlJoinTables
+                 addlJoinEntityMasterTables:addlJoinEntityMasterTables
              masterEntityResultSetConverter:masterEntityResultSetConverter
                             entityMainTable:entityMainTable
+                   addlJoinEntityMainTables:addlJoinEntityMainTables
                mainEntityResultSetConverter:mainEntityResultSetConverter
                      masterQueryTransformer:masterQueryTransformer
                  masterArgsArrayTransformer:argsArrayTransformer
@@ -916,21 +932,34 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
       NSString *joinTargetColumnName = joinTable[3];
       [selectClause appendFormat:@", %@.*", joinTablePrefix];
       [fromClause appendFormat:@", %@ %@", joinTableName, joinTablePrefix];
-      [whereClause appendFormat:@" AND %@.%@ = %@.%@", entityTablePrefix, joinEntityColumnName, joinTablePrefix, joinTargetColumnName];
+      if (![PEUtils isNil:entityTablePrefix]) {
+        [whereClause appendFormat:@" AND %@.%@ = %@.%@",
+         entityTablePrefix,
+         joinEntityColumnName,
+         joinTablePrefix,
+         joinTargetColumnName];
+      } else {
+        [whereClause appendFormat:@" AND %@ = %@.%@",
+         joinEntityColumnName,
+         joinTablePrefix,
+         joinTargetColumnName];
+      }
     }
   }
 }
 
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
+      addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
          parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
           parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
             parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                             pageSize:(NSNumber *)pageSize
                    entityMasterTable:(NSString *)entityMasterTable
-                      addlJoinTables:(NSArray *)addlJoinTables
+          addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
       masterEntityResultSetConverter:(PELMEntityFromResultSetBlk)masterEntityResultSetConverter
                      entityMainTable:(NSString *)entityMainTable
+            addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
         mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
               masterQueryTransformer:(NSString *(^)(NSString *))masterQueryTransformer
           masterArgsArrayTransformer:(NSArray *(^)(NSArray *))masterArgsArrayTransformer
@@ -941,6 +970,7 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
                                error:(PELMDaoErrorBlk)errorBlk {
   [PELMUtils reloadEntity:parentEntity
             fromMainTable:parentEntityMainTable
+           addlJoinTables:addlJoinParentEntityMainTables
               rsConverter:parentEntityMainRsConverter
                        db:db
                     error:errorBlk];
@@ -965,7 +995,7 @@ mstr.%@ NOT IN (SELECT man.%@ \
                      COL_MST_DELETED_DT];
       argsArray = @[[parentEntity localMasterIdentifier], [parentEntity localMainIdentifier]];
     }
-    [PELMUtils incorporateJoinTables:addlJoinTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"mstr"];
+    [PELMUtils incorporateJoinTables:addlJoinEntityMasterTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"mstr"];
     NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     qry = masterQueryTransformer(qry);
     argsArray = masterArgsArrayTransformer(argsArray);
@@ -1016,11 +1046,11 @@ mstr.%@ NOT IN (SELECT man.%@ \
       }
     }
   }
-  if ([parentEntity localMainIdentifier]) {    
+  if ([parentEntity localMainIdentifier]) {
     NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT man.*"];
-    NSMutableString *fromClause = [NSMutableString stringWithFormat:@" FROM %@ man", entityMainTable];
-    NSMutableString *whereClause = [NSMutableString stringWithFormat:@" WHERE man.%@ = ?", parentEntityMainIdColumn];
-    [PELMUtils incorporateJoinTables:addlJoinTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
+    NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ man", entityMainTable];
+    NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE man.%@ = ?", parentEntityMainIdColumn];
+    [PELMUtils incorporateJoinTables:addlJoinEntityMainTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
     NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     NSArray *argsArray = @[[parentEntity localMainIdentifier]];
     qry = mainQueryTransformer(qry);
@@ -1076,12 +1106,14 @@ mstr.%@ NOT IN (SELECT man.%@ \
 
 + (NSArray *)unsyncedEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                        parentEntityMainTable:(NSString *)parentEntityMainTable
+              addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
                  parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
                     parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                                     pageSize:(NSNumber *)pageSize
                            entityMasterTable:(NSString *)entityMasterTable
-                              addlJoinTables:(NSArray *)addlJoinTables
+                  addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
                              entityMainTable:(NSString *)entityMainTable
+                    addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
                 mainEntityResultSetConverter:(PELMEntityFromResultSetBlk)mainEntityResultSetConverter
                         mainQueryTransformer:(NSString *(^)(NSString *))mainQueryTransformer
                     mainArgsArrayTransformer:(NSArray *(^)(NSArray *))mainArgsArrayTransformer
@@ -1090,15 +1122,16 @@ mstr.%@ NOT IN (SELECT man.%@ \
                                        error:(PELMDaoErrorBlk)errorBlk {
   [PELMUtils reloadEntity:parentEntity
             fromMainTable:parentEntityMainTable
+           addlJoinTables:addlJoinParentEntityMainTables
               rsConverter:parentEntityMainRsConverter
                        db:db
                     error:errorBlk];
   NSMutableArray *entities = [NSMutableArray array];
   if ([parentEntity localMainIdentifier]) {
     NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT man.*"];
-    NSMutableString *fromClause = [NSMutableString stringWithFormat:@" FROM %@ man", entityMainTable];
-    NSMutableString *whereClause = [NSMutableString stringWithFormat:@" WHERE man.%@ = ? AND man.%@ = 0", parentEntityMainIdColumn, COL_MAN_SYNCED];
-    [PELMUtils incorporateJoinTables:addlJoinTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
+    NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ man", entityMainTable];
+    NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE man.%@ = ? AND man.%@ = 0", parentEntityMainIdColumn, COL_MAN_SYNCED];
+    [PELMUtils incorporateJoinTables:addlJoinEntityMainTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
     NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     NSArray *argsArray = @[[parentEntity localMainIdentifier]];
     qry = mainQueryTransformer(qry);
@@ -1137,11 +1170,14 @@ mstr.%@ NOT IN (SELECT man.%@ \
 
 + (NSInteger)numEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                   parentEntityMainTable:(NSString *)parentEntityMainTable
+         addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
             parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
              parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                       entityMasterTable:(NSString *)entityMasterTable
+             addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
                         entityMainTable:(NSString *)entityMainTable
+               addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
                                   where:(NSString *)where
                                whereArg:(id)whereArg
                                      db:(FMDatabase *)db
@@ -1166,11 +1202,14 @@ mstr.%@ NOT IN (SELECT man.%@ \
   };
   return [PELMUtils numEntitiesForParentEntity:parentEntity
                          parentEntityMainTable:parentEntityMainTable
+                addlJoinParentEntityMainTables:addlJoinParentEntityMainTables
                    parentEntityMainRsConverter:parentEntityMainRsConverter
                     parentEntityMasterIdColumn:parentEntityMasterIdColumn
                       parentEntityMainIdColumn:parentEntityMainIdColumn
                              entityMasterTable:entityMasterTable
+                    addlJoinEntityMasterTables:addlJoinEntityMasterTables
                                entityMainTable:entityMainTable
+                      addlJoinEntityMainTables:addlJoinEntityMainTables
                         masterQueryTransformer:masterQueryTransformer
                     masterArgsArrayTransformer:argsArrayTransformer
                           mainQueryTransformer:mainQueryTransformer
@@ -1181,20 +1220,26 @@ mstr.%@ NOT IN (SELECT man.%@ \
 
 + (NSInteger)numEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                   parentEntityMainTable:(NSString *)parentEntityMainTable
+         addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
             parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
              parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                       entityMasterTable:(NSString *)entityMasterTable
+             addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
                         entityMainTable:(NSString *)entityMainTable
+               addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
                                      db:(FMDatabase *)db
                                   error:(PELMDaoErrorBlk)errorBlk {
   return [PELMUtils numEntitiesForParentEntity:parentEntity
                          parentEntityMainTable:parentEntityMainTable
+                addlJoinParentEntityMainTables:addlJoinParentEntityMainTables
                    parentEntityMainRsConverter:parentEntityMainRsConverter
                     parentEntityMasterIdColumn:parentEntityMasterIdColumn
                       parentEntityMainIdColumn:parentEntityMainIdColumn
                              entityMasterTable:entityMasterTable
+                    addlJoinEntityMasterTables:addlJoinEntityMasterTables
                                entityMainTable:entityMainTable
+                      addlJoinEntityMainTables:addlJoinEntityMainTables
                         masterQueryTransformer:^NSString *(NSString *qry){return qry;}
                     masterArgsArrayTransformer:^NSArray *(NSArray *args){return args;}
                           mainQueryTransformer:^NSString *(NSString *qry){return qry;}
@@ -1205,11 +1250,14 @@ mstr.%@ NOT IN (SELECT man.%@ \
 
 + (NSInteger)numEntitiesForParentEntity:(PELMModelSupport *)parentEntity
                   parentEntityMainTable:(NSString *)parentEntityMainTable
+         addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
             parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
              parentEntityMasterIdColumn:(NSString *)parentEntityMasterIdColumn
                parentEntityMainIdColumn:(NSString *)parentEntityMainIdColumn
                       entityMasterTable:(NSString *)entityMasterTable
+             addlJoinEntityMasterTables:(NSArray *)addlJoinEntityMasterTables
                         entityMainTable:(NSString *)entityMainTable
+               addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
                  masterQueryTransformer:(NSString *(^)(NSString *))masterQueryTransformer
              masterArgsArrayTransformer:(NSArray *(^)(NSArray *))masterArgsArrayTransformer
                    mainQueryTransformer:(NSString *(^)(NSString *))mainQueryTransformer
@@ -1218,6 +1266,7 @@ mstr.%@ NOT IN (SELECT man.%@ \
                                   error:(PELMDaoErrorBlk)errorBlk {
   [PELMUtils reloadEntity:parentEntity
             fromMainTable:parentEntityMainTable
+           addlJoinTables:addlJoinParentEntityMainTables
               rsConverter:parentEntityMainRsConverter
                        db:db
                     error:errorBlk];
@@ -1287,33 +1336,35 @@ mstr.%@ NOT IN (SELECT man.%@ \
 
 + (PELMMainSupport *)parentForChildEntity:(PELMMainSupport *)childEntity
                     parentEntityMainTable:(NSString *)parentEntityMainTable
+           addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
                   parentEntityMasterTable:(NSString *)parentEntityMasterTable
+         addlJoinParentEntityMasterTables:(NSArray *)addlJoinParentEntityMasterTables
                  parentEntityMainFkColumn:(NSString *)parentEntityMainFkColumn
                parentEntityMasterFkColumn:(NSString *)parentEntityMasterFkColumn
               parentEntityMainRsConverter:(PELMEntityFromResultSetBlk)parentEntityMainRsConverter
             parentEntityMasterRsConverter:(PELMEntityFromResultSetBlk)parentEntityMasterRsConverter
                      childEntityMainTable:(NSString *)childEntityMainTable
+            addlJoinChildEntityMainTables:(NSArray *)addlJoinChildEntityMainTables
                childEntityMainRsConverter:(PELMEntityFromResultSetBlk)childEntityMainRsConverter
                    childEntityMasterTable:(NSString *)childEntityMasterTable
                                        db:(FMDatabase *)db
                                     error:(PELMDaoErrorBlk)errorBlk {
   [PELMUtils reloadEntity:childEntity
             fromMainTable:childEntityMainTable
+           addlJoinTables:addlJoinChildEntityMainTables
               rsConverter:childEntityMainRsConverter
                        db:db
                     error:errorBlk];
   if ([childEntity localMainIdentifier]) {
-    NSString *qry = [NSString stringWithFormat:@"\
-SELECT manparent.* \
-FROM %@ manparent \
-WHERE manparent.%@ IN (SELECT child.%@ \
-                       FROM %@ child \
-                       WHERE child.%@ = ?)",
-                     parentEntityMainTable,
-                     COL_LOCAL_ID,
-                     parentEntityMainFkColumn,
-                     childEntityMainTable,
-                     COL_LOCAL_ID];
+    NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT manparent.*"];
+    NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ manparent", parentEntityMainTable];
+    NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE manparent.%@ IN (SELECT child.%@ FROM %@ child WHERE child.%@ = ?)",
+                                     COL_LOCAL_ID,
+                                     parentEntityMainFkColumn,
+                                     childEntityMainTable,
+                                     COL_LOCAL_ID];
+    [PELMUtils incorporateJoinTables:addlJoinParentEntityMainTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"manparent"];
+    NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     PELMMainSupport *parentMainEntity = [PELMUtils entityFromQuery:qry
                                                        entityTable:parentEntityMainTable
                                                      localIdGetter:^NSNumber *(PELMModelSupport *entity){return [entity localMainIdentifier];}
@@ -1354,17 +1405,15 @@ WHERE manparent.%@ IN (SELECT child.%@ \
     }
     return parentMainEntity;
   } else if ([childEntity localMasterIdentifier]) {
-    NSString *qry = [NSString stringWithFormat:@"\
-SELECT masparent.* \
-FROM %@ masparent \
-WHERE masparent.%@ IN (SELECT child.%@ \
-                       FROM %@ child \
-                       WHERE child.%@ = ?)",
-                     parentEntityMasterTable,
-                     COL_LOCAL_ID,
-                     parentEntityMasterFkColumn,
-                     childEntityMasterTable,
-                     COL_LOCAL_ID];
+    NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT masparent.*"];
+    NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ masparent", parentEntityMasterTable];
+    NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE masparent.%@ IN (SELECT child.%@ FROM %@ child WHERE child.%@ = ?)",
+                                     COL_LOCAL_ID,
+                                     parentEntityMasterFkColumn,
+                                     childEntityMasterTable,
+                                     COL_LOCAL_ID];
+    [PELMUtils incorporateJoinTables:addlJoinParentEntityMasterTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"masparent"];
+    NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     PELMMainSupport *masterEntity = [PELMUtils entityFromQuery:qry
                                                    entityTable:parentEntityMasterTable
                                                  localIdGetter:^NSNumber *(PELMModelSupport *entity){return [entity localMasterIdentifier];}
@@ -1393,23 +1442,22 @@ WHERE masparent.%@ IN (SELECT child.%@ \
 
 + (PELMMainSupport *)masterParentForMasterChildEntity:(PELMMainSupport *)childEntity
                               parentEntityMasterTable:(NSString *)parentEntityMasterTable
+                     addlJoinParentEntityMasterTables:(NSArray *)addlJoinParentEntityMasterTables
                            parentEntityMasterFkColumn:(NSString *)parentEntityMasterFkColumn
                         parentEntityMasterRsConverter:(PELMEntityFromResultSetBlk)parentEntityMasterRsConverter
                                childEntityMasterTable:(NSString *)childEntityMasterTable
                                                    db:(FMDatabase *)db
                                                 error:(PELMDaoErrorBlk)errorBlk {
   if ([childEntity localMasterIdentifier]) {
-    NSString *qry = [NSString stringWithFormat:@"\
-SELECT masparent.* \
-FROM %@ masparent \
-WHERE masparent.%@ IN (SELECT child.%@ \
-                       FROM %@ child \
-                       WHERE child.%@ = ?)",
-                     parentEntityMasterTable,
-                     COL_LOCAL_ID,
-                     parentEntityMasterFkColumn,
-                     childEntityMasterTable,
-                     COL_LOCAL_ID];
+    NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT masparent.*"];
+    NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ masparent", parentEntityMasterTable];
+    NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE masparent.%@ IN (SELECT child.%@ FROM %@ child WHERE child.%@ = ?)",
+                                     COL_LOCAL_ID,
+                                     parentEntityMasterFkColumn,
+                                     childEntityMasterTable,
+                                     COL_LOCAL_ID];
+    [PELMUtils incorporateJoinTables:addlJoinParentEntityMasterTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"masparent"];
+    NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
     return [PELMUtils entityFromQuery:qry
                           entityTable:parentEntityMasterTable
                         localIdGetter:^NSNumber *(PELMModelSupport *entity){return [entity localMasterIdentifier];}
@@ -1468,11 +1516,13 @@ ID: [%@].", foundLocalId, localId, [entity globalIdentifier]]
 
 - (void)reloadEntity:(PELMModelSupport *)entity
        fromMainTable:(NSString *)mainTable
+      addlJoinTables:(NSArray *)addlJoinTables
          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                error:(PELMDaoErrorBlk)errorBlk {
   [_databaseQueue inDatabase:^(FMDatabase *db) {
     [PELMUtils reloadEntity:entity
               fromMainTable:mainTable
+             addlJoinTables:addlJoinTables
                 rsConverter:rsConverter
                          db:db
                       error:errorBlk];
@@ -1481,6 +1531,7 @@ ID: [%@].", foundLocalId, localId, [entity globalIdentifier]]
 
 + (void)reloadEntity:(PELMModelSupport *)entity
        fromMainTable:(NSString *)mainTable
+      addlJoinTables:(NSArray *)addlJoinTables
          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                   db:db
                error:(PELMDaoErrorBlk)errorBlk {
@@ -1493,7 +1544,12 @@ ID: [%@].", foundLocalId, localId, [entity globalIdentifier]]
                                                                  db:db
                                                               error:errorBlk];
     if (foundMainLocalIdentifier) {
-      NSString *qry = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ = ?", mainTable, COL_LOCAL_ID];
+      
+      NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT *"];
+      NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ man", mainTable];
+      NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE man.%@ = ?", COL_LOCAL_ID];
+      [PELMUtils incorporateJoinTables:addlJoinTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
+      NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
       PELMModelSupport *foundEntity = [PELMUtils entityFromQuery:qry
                                                      entityTable:mainTable
                                                    localIdGetter:^NSNumber *(PELMModelSupport *entity){return [entity localMainIdentifier];}
@@ -2175,14 +2231,18 @@ Entity: %@", entity]
 }
 
 + (NSArray *)entitiesFromEntityTable:(NSString *)entityTable
+                      addlJoinTables:(NSArray *)addlJoinTables
                          whereClause:(NSString *)whereClause
                        localIdGetter:(NSNumber *(^)(PELMModelSupport *))localIdGetter
                            argsArray:(NSArray *)argsArray
                          rsConverter:(PELMEntityFromResultSetBlk)rsConverter
                                   db:(FMDatabase *)db
                                error:(PELMDaoErrorBlk)errorBlk {
-  NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@",
-                     entityTable, whereClause];
+  NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT *"];
+  NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@", entityTable];
+  NSMutableString *theWhereClause  = [NSMutableString stringWithFormat:@" WHERE %@", whereClause];
+  [PELMUtils incorporateJoinTables:addlJoinTables intoSelectClause:selectClause fromClause:fromClause whereClause:theWhereClause entityTablePrefix:nil];
+  NSString *query = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, theWhereClause];
   return [PELMUtils entitiesFromQuery:query
                            numAllowed:nil
                           entityTable:entityTable

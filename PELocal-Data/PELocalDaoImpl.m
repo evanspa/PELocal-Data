@@ -443,6 +443,7 @@ preserveExistingLocalEntities:preserveExistingLocalEntities
 - (void)reloadUser:(PELMUser *)user error:(PELMDaoErrorBlk)errorBlk {
   [_localModelUtils reloadEntity:user
                    fromMainTable:TBL_MAIN_USER
+                  addlJoinTables:nil
                      rsConverter:^(FMResultSet *rs){return [self mainUserFromResultSet:rs];}
                            error:errorBlk];
 }
