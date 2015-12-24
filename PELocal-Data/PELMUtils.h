@@ -199,6 +199,12 @@
                                         db:(FMDatabase *)db
                                      error:(PELMDaoErrorBlk)errorBlk;
 
++ (void)incorporateJoinTables:(NSArray *)joinTables
+             intoSelectClause:(NSMutableString *)selectClause
+                   fromClause:(NSMutableString *)fromClause
+                  whereClause:(NSMutableString *)whereClause
+            entityTablePrefix:(NSString *)entityTablePrefix;
+
 + (NSArray *)entitiesForParentEntity:(PELMModelSupport *)parentEntity
                parentEntityMainTable:(NSString *)parentEntityMainTable
       addlJoinParentEntityMainTables:(NSArray *)addlJoinParentEntityMainTables
