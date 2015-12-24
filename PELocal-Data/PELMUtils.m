@@ -1745,12 +1745,18 @@ Entity: %@", entity]
 }
 
 - (NSArray *)markEntitiesAsSyncInProgressInMainTable:(NSString *)mainTable
+                            addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
                                  entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
                                           updateStmt:(NSString *)updateStmt
                                        updateArgsBlk:(NSArray *(^)(PELMMainSupport *))updateArgsBlk
                                                error:(PELMDaoErrorBlk)errorBlk {
+  NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT man.*"];
+  NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ man", mainTable];
+  NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE 1 = 1"];
+  [PELMUtils incorporateJoinTables:addlJoinEntityMainTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
+  NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
   return [self markEntitiesAsSyncInProgressInMainTable:mainTable
-                                            usingQuery:[NSString stringWithFormat:@"SELECT * FROM %@", mainTable]
+                                            usingQuery:qry
                                    entityFromResultSet:entityFromResultSet
                                             updateStmt:updateStmt
                                          updateArgsBlk:updateArgsBlk
@@ -1761,6 +1767,7 @@ Entity: %@", entity]
 + (BOOL)prepareEntityForEdit:(PELMMainSupport *)entity
                           db:(FMDatabase *)db
                    mainTable:(NSString *)mainTable
+    addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
          entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
           mainEntityInserter:(PELMMainEntityInserterBlk)mainEntityInserter
            mainEntityUpdater:(PELMMainEntityUpdaterBlk)mainEntityUpdater
@@ -1784,8 +1791,13 @@ Entity: %@", entity]
     [entity incrementEditCount];
     mainEntityUpdater(entity, db, errorBlk);
   };
-  NSString *(^mainEntityFetchQueryBlk)(NSString *) = ^NSString *(NSString *whereCol) {
-    return [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@ = ?", mainTable, whereCol];
+  NSString *(^mainEntityFetchQueryBlk)(NSString *) = ^NSString *(NSString *whereCol) {    
+    NSMutableString *selectClause = [NSMutableString stringWithString:@"SELECT man.*"];
+    NSMutableString *fromClause   = [NSMutableString stringWithFormat:@" FROM %@ man", mainTable];
+    NSMutableString *whereClause  = [NSMutableString stringWithFormat:@" WHERE man.%@ = ?", whereCol];
+    [PELMUtils incorporateJoinTables:addlJoinEntityMainTables intoSelectClause:selectClause fromClause:fromClause whereClause:whereClause entityTablePrefix:@"man"];
+    NSString *qry = [NSString stringWithFormat:@"%@%@%@", selectClause, fromClause, whereClause];
+    return qry;
   };
   NSString *mainEntityFetchQuery;
   NSArray *mainEntityFetchQueryArgs;
@@ -1816,6 +1828,7 @@ Entity: %@", entity]
 
 - (BOOL)prepareEntityForEditInTxn:(PELMMainSupport *)entity
                         mainTable:(NSString *)mainTable
+         addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
               entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
                mainEntityInserter:(PELMMainEntityInserterBlk)mainEntityInserter
                 mainEntityUpdater:(PELMMainEntityUpdaterBlk)mainEntityUpdater
@@ -1826,6 +1839,7 @@ Entity: %@", entity]
     returnVal = [PELMUtils prepareEntityForEdit:entity
                                              db:db
                                       mainTable:mainTable
+                       addlJoinEntityMainTables:addlJoinEntityMainTables
                             entityFromResultSet:entityFromResultSet
                              mainEntityInserter:mainEntityInserter
                               mainEntityUpdater:mainEntityUpdater

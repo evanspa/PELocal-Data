@@ -393,6 +393,7 @@ preserveExistingLocalEntities:preserveExistingLocalEntities
   return [PELMUtils prepareEntityForEdit:user
                                       db:db
                                mainTable:TBL_MAIN_USER
+                addlJoinEntityMainTables:nil
                      entityFromResultSet:^(FMResultSet *rs){return [self mainUserFromResultSet:rs];}
                       mainEntityInserter:^(PELMMainSupport *entity, FMDatabase *db, PELMDaoErrorBlk errorBlk) {
                         [self insertIntoMainUser:(PELMUser *)entity db:db error:errorBlk];
@@ -460,6 +461,7 @@ preserveExistingLocalEntities:preserveExistingLocalEntities
 
 - (PELMUser *)markUserAsSyncInProgressWithError:(PELMDaoErrorBlk)errorBlk {
   NSArray *userEntities = [_localModelUtils markEntitiesAsSyncInProgressInMainTable:TBL_MAIN_USER
+                                                           addlJoinEntityMainTables:nil
                                                                 entityFromResultSet:^(FMResultSet *rs){return [self mainUserFromResultSet:rs];}
                                                                          updateStmt:[self updateStmtForMainUser]
                                                                       updateArgsBlk:^NSArray *(PELMMainSupport *entity){return [self updateArgsForMainUser:(PELMUser *)entity];}

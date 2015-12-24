@@ -393,6 +393,7 @@
                                                error:(PELMDaoErrorBlk)errorBlk;
 
 - (NSArray *)markEntitiesAsSyncInProgressInMainTable:(NSString *)mainTable
+                            addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
                                  entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
                                           updateStmt:(NSString *)updateStmt
                                        updateArgsBlk:(NSArray *(^)(PELMMainSupport *))updateArgsBlk
@@ -401,6 +402,7 @@
 + (BOOL)prepareEntityForEdit:(PELMMainSupport *)entity
                           db:(FMDatabase *)db
                    mainTable:(NSString *)mainTable
+    addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
          entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
           mainEntityInserter:(PELMMainEntityInserterBlk)mainEntityInserter
            mainEntityUpdater:(PELMMainEntityUpdaterBlk)mainEntityUpdater
@@ -408,6 +410,7 @@
 
 - (BOOL)prepareEntityForEditInTxn:(PELMMainSupport *)entity
                         mainTable:(NSString *)mainTable
+         addlJoinEntityMainTables:(NSArray *)addlJoinEntityMainTables
               entityFromResultSet:(PELMEntityFromResultSetBlk)entityFromResultSet
                mainEntityInserter:(PELMMainEntityInserterBlk)mainEntityInserter
                 mainEntityUpdater:(PELMMainEntityUpdaterBlk)mainEntityUpdater
