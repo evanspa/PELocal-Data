@@ -283,6 +283,7 @@ resendVerificationEmailSerializer:(PEResendVerificationEmailSerializer *)resendV
                  authRequired:(PELMRemoteMasterAuthReqdBlk)authRequired
             completionHandler:(PELMRemoteMasterCompletionHandler)complHandler {
   [_relationExecutor doGetForURLString:globalId
+                            parameters:nil
                        ifModifiedSince:nil
                       targetSerializer:_userSerializer
                           asynchronous:YES
@@ -462,6 +463,7 @@ resendVerificationEmailSerializer:(PEResendVerificationEmailSerializer *)resendV
                       authRequired:(PELMRemoteMasterAuthReqdBlk)authRequired
                  completionHandler:(PELMRemoteMasterCompletionHandler)complHandler {
   [_relationExecutor doGetForURLString:globalId
+                            parameters:nil
                        ifModifiedSince:nil
                       targetSerializer:_changelogSerializer
                           asynchronous:YES

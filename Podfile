@@ -4,7 +4,7 @@ platform :ios, '8.4'
 
 pod 'PEObjc-Commons', '~> 1.0.101', :inhibit_warnings => true
 pod 'FMDB', '~> 2.5', :inhibit_warnings => true
-pod 'PEHateoas-Client', '~> 1.0.14', :inhibit_warnings => true
+pod 'PEHateoas-Client', '~> 1.0.15', :inhibit_warnings => true
 pod 'CocoaLumberjack', '~> 1.9', :inhibit_warnings => true
 
 pod 'AFNetworking', '~> 2.6.3', :inhibit_warnings => true
