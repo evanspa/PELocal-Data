@@ -12,8 +12,8 @@ Pod::Spec.new do |s|
   s.exclude_files = "**/*Tests/*.*"
   s.requires_arc = true
   s.pod_target_xcconfig = {'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES'}
-  s.dependency 'PEObjc-Commons', '~> 1.0.101'
+  s.dependency 'PEObjc-Commons', '~> 1.0.111'
   s.dependency 'FMDB', '~> 2.5'
-  s.dependency 'PEHateoas-Client', '~> 1.0.15'
+  s.dependency 'PEHateoas-Client', '~> 1.0.18'
   s.dependency 'CocoaLumberjack', '~> 1.9'
 end

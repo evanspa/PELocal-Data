@@ -40,21 +40,21 @@ PODS:
   - CocoaLumberjack/Core (1.9.2)
   - CocoaLumberjack/Extensions (1.9.2):
     - CocoaLumberjack/Core
-  - FMDB (2.5):
-    - FMDB/standard (= 2.5)
-  - FMDB/common (2.5)
-  - FMDB/standard (2.5):
-    - FMDB/common
-  - KissXML (5.0)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - KissXML (5.1.2):
+    - KissXML/Core (= 5.1.2)
+  - KissXML/Core (5.1.2)
   - Kiwi (2.3.1)
   - OHHTTPStubs (3.1.12):
     - OHHTTPStubs/Core (= 3.1.12)
   - OHHTTPStubs/Core (3.1.12)
-  - PEHateoas-Client (1.0.15):
+  - PEHateoas-Client (1.0.18):
     - AFNetworking (~> 2.6.3)
     - CocoaLumberjack (~> 1.9)
-    - PEObjc-Commons (~> 1.0.104)
-  - PEObjc-Commons (1.0.104):
+    - PEObjc-Commons (~> 1.0.111)
+  - PEObjc-Commons (1.0.111):
     - BlocksKit (~> 2.2.5)
   - PEWire-Control (1.0.5):
     - KissXML (~> 5.0)
@@ -73,23 +73,23 @@ DEPENDENCIES:
   - KissXML (~> 5.0)
   - Kiwi (~> 2.3.1)
   - OHHTTPStubs (~> 3.1.12)
-  - PEHateoas-Client (~> 1.0.15)
-  - PEObjc-Commons (~> 1.0.101)
+  - PEHateoas-Client (~> 1.0.18)
+  - PEObjc-Commons (~> 1.0.111)
   - PEWire-Control (~> 1.0.4)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
-  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
-  KissXML: ce643413d618ad69886d0d43c3792b7dedfe476e
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  KissXML: 246c842586bb77110e04fb88e19376d96245c856
   Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
   OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
-  PEHateoas-Client: 29ffdf23a1fa97feb2cb80127e4331902f6ad81a
-  PEObjc-Commons: ef43f73252e2ca083254cc1f371e1fd0ab3260bd
+  PEHateoas-Client: 274eabd8bf359cac8fc25e0ad30a6722596a13ae
+  PEObjc-Commons: 18580a100ec12f5ca494755a6a92284d711fdba3
   PEWire-Control: c2d18d4261d025182513466da9c6ed80e596f526
   PEXML-Utils: d36d0ab7337b92c120ec49b84f99e7b923bf8a24
 
-PODFILE CHECKSUM: 1e8a4340d98701b07951e66665e01b9988ae8294
+PODFILE CHECKSUM: eb3a81ef7aa1a87642a18b702b016df58c475df5
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.beta.1
