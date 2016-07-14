@@ -22,9 +22,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "PEUtils.h" // from PEObjc-Commons
-#import <PEHateoas-Client/HCRelation.h>
-#import <PEHateoas-Client/HCMediaType.h>
+#import "PEObjc-Commons/PEUtils.h"
+#import "PEHateoas-Client/HCRelation.h"
+#import "PEHateoas-Client/HCMediaType.h"
 #import "PELMModelSupport.h"
 #import "PELMUtils.h"
 
