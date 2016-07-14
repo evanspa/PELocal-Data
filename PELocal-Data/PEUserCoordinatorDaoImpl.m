@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 #import "PEUserCoordinatorDaoImpl.h"
-#import "PEUtils.h" // from PEObjc-Commons
+#import <PEObjc-Commons/PEUtils.h>
 #import <PEHateoas-Client/HCRelation.h>
 #import <PEHateoas-Client/HCResource.h>
 #import "PELMUser.h"

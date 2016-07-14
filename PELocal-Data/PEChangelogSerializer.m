@@ -23,8 +23,8 @@
 // THE SOFTWARE.
 
 #import "PEChangelogSerializer.h"
-#import "PEHateoas-Client/HCUtils.h"
-#import "PEObjc-Commons/NSDictionary+PEAdditions.h"
+#import <PEHateoas-Client/HCUtils.h>
+#import <PEObjc-Commons/NSDictionary+PEAdditions.h>
 #import "PEChangelog.h"
 
 NSString * const PEChangelogUpdatedAtKey = @"changelog/updated-at";

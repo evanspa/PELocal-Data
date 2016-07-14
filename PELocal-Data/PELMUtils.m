@@ -25,10 +25,10 @@
 #import <CocoaLumberjack/DDLog.h>
 #import <FMDB/FMDatabase.h>
 #import <FMDB/FMDatabaseQueue.h>
-#import "PEHateoas-Client/HCResource.h"
-#import "PEHateoas-Client/HCMediaType.h"
-#import "PEHateoas-Client/HCRelation.h"
-#import "PEObjc-Commons/PEUtils.h"
+#import <PEHateoas-Client/HCResource.h>
+#import <PEHateoas-Client/HCMediaType.h>
+#import <PEHateoas-Client/HCRelation.h>
+#import <PEObjc-Commons/PEUtils.h>
 
 #import "PELMUtils.h"
 #import "PELMDDL.h"

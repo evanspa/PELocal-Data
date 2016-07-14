@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "PEUtils.h" // from PEObjc-Commons
+#import <PEObjc-Commons/PEUtils.h>
 #import "PELMUser.h"
 #import "PELMDDL.h"
 
