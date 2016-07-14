@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 #import "PELMMainSupport.h"
-#import <PEObjc-Commons/PEUtils.h>
+#import <PEUtils.h> // from PEObjc-Commons
 
 @implementation PELMMainSupport
 
