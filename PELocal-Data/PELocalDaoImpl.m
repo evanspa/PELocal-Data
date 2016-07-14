@@ -25,7 +25,7 @@
 #import "PELocalDaoImpl.h"
 #import <FMDB/FMDatabase.h>
 #import "PELMDDL.h"
-#import <PEObjc-Commons/PEUtils.h>
+#import "PEUtils.h" // from PEObjc-Commons
 #import <PEHateoas-Client/HCMediaType.h>
 #import <FMDB/FMDatabaseQueue.h>
 #import <FMDB/FMDatabase.h>

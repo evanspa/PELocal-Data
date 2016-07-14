@@ -28,7 +28,7 @@
 #import <PEHateoas-Client/HCResource.h>
 #import <PEHateoas-Client/HCMediaType.h>
 #import <PEHateoas-Client/HCRelation.h>
-#import <PEObjc-Commons/PEUtils.h>
+#import "PEUtils.h" // from PEObjc-Commons
 
 #import "PELMUtils.h"
 #import "PELMDDL.h"

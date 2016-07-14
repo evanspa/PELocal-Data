@@ -22,8 +22,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "PEUtils.h" // from PEObjc-Commons
 #import "PELMUser.h"
-#import <PEObjc-Commons/PEUtils.h>
 #import "PELMDDL.h"
 
 NSString * const PELMUsersRelation = @"users";
