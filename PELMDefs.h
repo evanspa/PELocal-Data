@@ -56,15 +56,15 @@ typedef void (^PELMMainEntityInserterBlk)(PELMMainSupport *, FMDatabase *, PELMD
 
 typedef void (^PELMMainEntityUpdaterBlk)(PELMMainSupport *, FMDatabase *, PELMDaoErrorBlk);
 
-void (^PELMCannotBe)(BOOL, NSString *);
+typedef void (^PELMCannotBe)(BOOL, NSString *);
 
-id (^PELMOrNil)(id);
+typedef id (^PELMOrNil)(id);
 
-void (^PELMLogSyncRemoteMaster)(NSString *, NSInteger);
+typedef void (^PELMLogSyncRemoteMaster)(NSString *, NSInteger);
 
-void (^PELMLogSystemPrune)(NSString *, NSInteger);
+typedef void (^PELMLogSystemPrune)(NSString *, NSInteger);
 
-void (^PELMLogSyncLocal)(NSString *, NSInteger);
+typedef void (^PELMLogSyncLocal)(NSString *, NSInteger);
 
 typedef NS_ENUM(NSInteger, PELMSaveNewOrExistingCode) {
   PELMSaveNewOrExistingCodeDidNothing,

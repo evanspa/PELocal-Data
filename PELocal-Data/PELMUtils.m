@@ -36,18 +36,6 @@
 #import "PELMMainSupport.h"
 #import "PELMNotificationNames.h"
 
-void (^PELMCannotBe)(BOOL, NSString *) = ^(BOOL invariantViolation, NSString *msg) {
-  if (invariantViolation) {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:msg
-                                 userInfo:nil];
-  }
-};
-
-id (^PELMOrNil)(id) = ^ id (id someObj) {
-  return [PEUtils orNil:someObj];
-};
-
 PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = ^PELMMainSupport *(FMResultSet *rs, NSString *mainTable, NSDictionary *relations) {
   return [[PELMMainSupport alloc] initWithLocalMainIdentifier:[rs objectForColumnName:COL_LOCAL_ID]
                                         localMasterIdentifier:nil // NA (this is a master entity-only column)
@@ -293,6 +281,22 @@ PELMMainSupport * (^toMainSupport)(FMResultSet *, NSString *, NSDictionary *) = 
 }
 
 #pragma mark - Utils
+
++ (PELMCannotBe)makeCannotBe {
+    return ^(BOOL invariantViolation, NSString *msg) {
+        if (invariantViolation) {
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                           reason:msg
+                                         userInfo:nil];
+        }
+    };
+}
+
++ (PELMOrNil)makeOrNil {
+    return ^ id (id someObj) {
+        return [PEUtils orNil:someObj];
+    };
+}
 
 - (void)cancelSyncForEntity:(PELMMainSupport *)entity
              httpRespCode:(NSNumber *)httpRespCode

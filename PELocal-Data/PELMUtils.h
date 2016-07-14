@@ -83,6 +83,10 @@
 
 #pragma mark - Utils
 
++ (PELMCannotBe)makeCannotBe;
+
++ (PELMOrNil)makeOrNil;
+
 - (void)cancelSyncForEntity:(PELMMainSupport *)entity
                httpRespCode:(NSNumber *)httpRespCode
                   errorMask:(NSNumber *)errorMask
